@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AirGuard - Respira Inteligente</title>
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #003366;
+            background-color: #ffffff;
+        }
+
+        /* Navbar fija*/
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(to right, #003366, #005b99);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            z-index: 999;
+            color: white;
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: white;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links li a:hover {
+            opacity: 0.7;
+        }
+
+        .auth-buttons a {
+            margin-left: 15px;
+            text-decoration: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .auth-buttons .login:hover {
+            background-color: #cce6ff;
+            color: #004477;
+        }
+
+        .auth-buttons .register {
+            background-color: white;
+            color: #003366;
+            font-weight: bold;
+        }
+
+        .auth-buttons .register:hover {
+            background-color: #cce6ff;
+        }
+
+        /* Hero principal */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(to bottom right, #e0f2ff, #ffffff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 60px;
+            /* espacio para navbar */
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #003366;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #004477;
+        }
+
+        .btn-hero {
+            padding: 12px 24px;
+            background-color: #005b99;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .btn-hero:hover {
+            background-color: #0077cc;
+            cursor:url(img/secretario.cur);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #f2f2f2;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">AirGuard</div>
+            <ul class="nav-links">
+                <li><a href="#">Dispositivos</a></li>
+                <li><a href="#">Funciones</a></li>
+                <li><a href="#">Tienda</a></li>
+                <li><a href="#">Soporte</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <a href="#" class="login">Iniciar sesión</a>
+                <a href="#" class="register">Registrarse</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Respira mejor. Vive con AirGuard.</h1>
+            <p>Monitorea y purifica el aire de tu hogar desde cualquier lugar.</p>
+            <a href="#" class="btn-hero">Descubre cómo funciona</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2025 AirGuard. Todos los derechos reservados.</p>
+    </footer>
+</body>
+
+</html>
