@@ -105,11 +105,14 @@ body {
     text-decoration: none;
     border-radius: 6px;
     font-weight: bold;
+    transition: transform 0.3s;
+    display: inline-block;
 }
 
 .btn-hero:hover {
     background-color: #0077cc;
-    cursor: url(img/secretario.cur);
+    cursor: url(img/secretario.cur), help;
+    transform: scale(1.2);
 }
 
 /* Footer */
