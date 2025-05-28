@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse - AirGuard</title>
+    <link href="{{ url_for('static', filename='css/register.css') }}" rel="stylesheet">
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>Registrarse</h2>
+        <form method="POST" action="/register">
+            <input type="text" name="name" placeholder="Nombre completo" required>
+            <input type="email" name="email" placeholder="Correo electrónico" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <input type="password" name="confirm_password" placeholder="Confirmar contraseña" required>
+            <button type="submit">Crear cuenta</button>
+        </form>
+        <a href="/login">¿Ya tienes cuenta? Inicia sesión</a>
+    </div>
+</body>
+
+</html>

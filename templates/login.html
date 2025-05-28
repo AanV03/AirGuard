@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión - AirGuard</title>
+    <link href="{{ url_for('static', filename='css/login.css') }}" rel="stylesheet">
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>Iniciar sesión</h2>
+        <form method="POST" action="/login">
+            <input type="email" name="email" placeholder="Correo electrónico" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <button type="submit">Entrar</button>
+        </form>
+        <a href="/register">¿No tienes una cuenta? Regístrate</a>
+    </div>
+</body>
+
+</html>
