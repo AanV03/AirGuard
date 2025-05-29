@@ -4,38 +4,123 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AirGuard - Respira Inteligente</title>
+    <title>AirGuard | Filtro de Aire Inteligente</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="{{ url_for('static', filename='css/mainpage.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="logo">AirGuard</div>
-            <ul class="nav-links">
-                <li><a href="#">Dispositivos</a></li>
-                <li><a href="#">Funciones</a></li>
-                <li><a href="#">Tienda</a></li>
-                <li><a href="#">Soporte</a></li>
-            </ul>
-            <div class="auth-buttons">
-                <a href="#" class="login">Iniciar sesión</a>
-                <a href="#" class="register">Registrarse</a>
-            </div>
-        </nav>
+
+    <!-- HEADER -->
+    <header class="bg-dark text-white p-3">
+        <div class="container d-flex justify-content-between align-items-center">
+            <img src="/static/img/logo.png" class="logo">
+            <nav>
+                <button class="buttonLogin" id="login" onclick="login()">Iniciar sesión</button>
+                <button class="buttonRegister" id="register" onclick="register()">Registrarse</button>
+                <button class="buttonShop"><i class="bi bi-cart4"></i></button>
+            </nav>
+        </div>
     </header>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Respira mejor. Vive con AirGuard.</h1>
-            <p>Monitorea y purifica el aire de tu hogar desde cualquier lugar.</p>
-            <a href="#" class="btn-hero">Descubre cómo funciona</a>
+    <!-- HERO -->
+    <section class="hero text-white d-flex align-items-center justify-content-center text-center">
+        <div>
+            <h2>Respira inteligente. Vive mejor.</h2>
+            <p class="lead">AirGuard detecta, filtra y protege. Calidad de aire en tiempo real, desde cualquier lugar.
+            </p>
+            <a href="#sobre" class="arrow-link">
+                Descubre más
+                <span class="arrow-v"></span>
+            </a>
+
         </div>
     </section>
 
-    <footer class="footer">
-        <p>&copy; 2025 AirGuard. Todos los derechos reservados.</p>
+    <!-- SOBRE AIRGUARD -->
+    <section id="sobre" class="py-5 bg-light">
+        <div class="container text-center">
+            <h3 class="mb-4">¿Qué es AirGuard?</h3>
+            <p class="mb-4">AirGuard es un purificador de aire con monitoreo en tiempo real de la calidad del aire en
+                tus espacios. Con sensores
+                de alta precisión, detecta polen, humo, humedad y más, activando filtros inteligentes para que respires
+                mejor, sin esfuerzo.</p>
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Detección</h5>
+                    <p>Sensores que analizan el aire en tiempo real.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Filtrado</h5>
+                    <p>Elimina partículas dañinas automáticamente.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Monitoreo</h5>
+                    <p>Consulta la calidad del aire desde tu app o navegador.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FUNCIONES -->
+    <section id="funciones" class="py-5">
+        <div class="container text-center">
+            <h3 class="mb-4">Funciones destacadas</h3>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card p-3">
+                        <h6>🌬️ Filtro inteligente</h6>
+                        <p>Activa según el nivel de contaminación.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card p-3">
+                        <h6>📊 Datos en vivo</h6>
+                        <p>Visualiza la calidad del aire en tu celular.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card p-3">
+                        <h6>🔔 Alertas automáticas</h6>
+                        <p>Recibe avisos si el aire está contaminado.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card p-3">
+                        <h6>⚙️ Control remoto</h6>
+                        <p>Enciende, apaga y programa desde la web.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALERÍA -->
+    <section id="galeria" class="py-5 bg-light">
+        <div class="container text-center">
+            <h3 class="mb-4">Vista del sistema</h3>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <img src="/static/img/prototipo1.png" class="img-fluid rounded" alt="mockup 1" />
+                </div>
+                <div class="col-md-4">
+                    <img src="/static/img/prototipo2.png" class="img-fluid rounded" alt="mockup 2" />
+                </div>
+                <div class="col-md-4">
+                    <img src="https://via.placeholder.com/300x200" class="img-fluid rounded" alt="mockup 3" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-dark text-white text-center py-3">
+        <p class="mb-0">&copy; 2025 AirGuard | Proyecto IoT Universitario</p>
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/mainpage.js" defer></script>
 </body>
 
 </html>
