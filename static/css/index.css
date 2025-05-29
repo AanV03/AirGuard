@@ -1,0 +1,98 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.hero {
+  height: 100vh;
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  color: white;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.hero h2 {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.hero p.lead {
+  font-size: 1.25rem;
+}
+
+.card {
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #ffffff;
+  border-radius: 12px;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+}
+
+nav a {
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #0dcaf0;
+}
+
+section {
+  scroll-margin-top: 100px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero h2 {
+    font-size: 2.25rem;
+  }
+
+  .hero p.lead {
+    font-size: 1rem;
+  }
+
+  .card {
+    margin-bottom: 1rem;
+  }
+
+  header nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .container.d-flex {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+  .hero h2 {
+    font-size: 2.75rem;
+  }
+}
+
+@media (min-width: 1201px) {
+  .hero h2 {
+    font-size: 3.5rem;
+  }
+}
