@@ -5,14 +5,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Configuración AirGuard</title>
-    <link href="{{ url_for('static', filename='css/configuration.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
+    <link href="/static/css/configuration.css" rel="stylesheet">
 </head>
 
 <body>
-
     <header>
         AirGuard Config
-        <!-- <img src="img/polygon-scatter-haikei.svg" class="header-svg" /> -->
     </header>
 
     <div class="layout">
@@ -29,14 +28,11 @@
             </ul>
         </nav>
 
-        <!-- CONTENIDO PRINCIPAL -->
         <main>
-            <!-- ESTADO -->
             <section id="estado" class="tab-content">
                 <h2>Estado</h2>
                 <button id="btn-refresh">🔄 Refrescar</button>
                 <div class="status-cards">
-                    <!-- Aquí irán los indicadores: CO, PM2.5, temp, etc. -->
                     <p>CO: <span id="co-value">--</span> ppm</p>
                     <p>PM2.5: <span id="pm25-value">--</span> µg/m³</p>
                     <p>Temp: <span id="temp-value">--</span> °C</p>
@@ -44,7 +40,6 @@
                 </div>
             </section>
 
-            <!-- DISPOSITIVOS -->
             <section id="dispositivos" class="tab-content hidden">
                 <h2>Dispositivos</h2>
                 <form id="form-wifi">
@@ -69,7 +64,6 @@
                 </form>
             </section>
 
-            <!-- CASA -->
             <section id="casa" class="tab-content hidden">
                 <h2>Casa</h2>
                 <form id="form-casa">
@@ -90,7 +84,6 @@
                 </form>
             </section>
 
-            <!-- HORARIOS -->
             <section id="horarios" class="tab-content hidden">
                 <h2>Horarios</h2>
                 <form id="form-horarios">
@@ -102,22 +95,19 @@
                     </select>
 
                     <label for="active-hours">Horas activas:</label>
-                    <input type="time" id="start-time" name="start_time">
-                    a
+                    <input type="time" id="start-time" name="start_time"> a
                     <input type="time" id="end-time" name="end_time">
 
                     <label for="active-days">Días activos:</label>
                     <select id="active-days" name="active_days" multiple>
                         <option value="mon">Lunes</option>
                         <option value="tue">Martes</option>
-                        <!-- ... -->
                     </select>
 
                     <button type="submit">Guardar Horarios</button>
                 </form>
             </section>
 
-            <!-- FILTROS -->
             <section id="filtros" class="tab-content hidden">
                 <h2>Filtros</h2>
                 <form id="form-filtros">
@@ -136,7 +126,6 @@
                 </form>
             </section>
 
-            <!-- USUARIOS -->
             <section id="usuarios" class="tab-content hidden">
                 <h2>Usuarios</h2>
                 <form id="form-usuarios">
@@ -150,18 +139,15 @@
                 </form>
             </section>
 
-            <!-- SOPORTE -->
             <section id="soporte" class="tab-content hidden">
                 <h2>Soporte</h2>
                 <button id="btn-restart">🔄 Reiniciar dispositivo</button>
                 <div class="logs">
-                    <!-- Aquí cargarás logs o eventos -->
-                    <p>Log 1: …</p>
-                    <p>Log 2: …</p>
+                    <p>Log 1: ...</p>
+                    <p>Log 2: ...</p>
                 </div>
             </section>
 
-            <!-- SALIR -->
             <section id="salir" class="tab-content hidden">
                 <h2>Salir</h2>
                 <p>¿Seguro que quieres cerrar sesión?</p>
@@ -174,6 +160,7 @@
             <p>Esta sección proporciona información detallada y guía sobre el estado mostrado.</p>
         </aside>
     </div>
+
     <script src="/static/js/configuration.js" defer></script>
 </body>
 
