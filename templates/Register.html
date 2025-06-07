@@ -2,24 +2,113 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrarse - AirGuard</title>
-    <link href="{{ url_for('static', filename='css/register.css') }}" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrarse - AirGuard</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #141e30, #243b55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .form-container {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 400px;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-container h2 {
+      text-align: center;
+      color: #2a72d4;
+      margin-bottom: 25px;
+    }
+
+    .form-container input {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      transition: border-color 0.3s;
+      font-size: 1rem;
+    }
+
+    .form-container input:focus {
+      outline: none;
+      border-color: #2a72d4;
+      box-shadow: 0 0 5px rgba(42, 114, 212, 0.3);
+    }
+
+    .form-container button {
+      width: 100%;
+      padding: 14px;
+      background: #2a72d4;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      margin-top: 15px;
+      transition: background 0.3s;
+      font-size: 1rem;
+    }
+
+    .form-container button:hover {
+      background: #1e57a5;
+    }
+
+    .form-container a {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #2a72d4;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .form-container a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 
 <body>
-    <div class="form-container">
-        <h2>Registrarse</h2>
-        <form method="POST" action="/register">
-            <input type="text" name="name" placeholder="Nombre completo" required>
-            <input type="email" name="email" placeholder="Correo electrónico" required>
-            <input type="password" name="password" placeholder="Contraseña" required>
-            <input type="password" name="confirm_password" placeholder="Confirmar contraseña" required>
-            <button type="submit">Crear cuenta</button>
-        </form>
-        <a href="/login">¿Ya tienes cuenta? Inicia sesión</a>
-    </div>
+  <div class="form-container">
+    <h2>Crear cuenta AirGuard</h2>
+    <form method="POST" action="/register">
+      <input type="text" name="name" placeholder="Nombre completo" required>
+      <input type="email" name="email" placeholder="Correo electrónico" required>
+      <input type="password" name="password" placeholder="Contraseña" required>
+      <input type="password" name="confirm_password" placeholder="Confirmar contraseña" required>
+      <button type="submit">Crear cuenta</button>
+    </form>
+    <a href="/login">¿Ya tienes cuenta? Inicia sesión</a>
+  </div>
 </body>
 
 </html>
