@@ -1,48 +1,32 @@
-body{
-    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+.bg-gradient {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
 }
 
-.form-container {
+.login-card {
     max-width: 400px;
-    margin: 120px auto;
-    background-color: #f2f2f2;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.form-container h2 {
-    text-align: center;
-    color: #003366;
-    margin-bottom: 20px;
-}
-
-.form-container input {
     width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-}
-
-.form-container button {
-    width: 100%;
-    padding: 12px;
-    background-color: #005b99;
-    color: white;
-    font-weight: bold;
+    background-color: #ffffff;
+    border-radius: 16px;
     border: none;
-    border-radius: 6px;
-    transition: background-color 0.3s;
 }
 
-.form-container button:hover {
-    background-color: #0077cc;
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    font-weight: bold;
+    transition: all 0.3s ease;
 }
 
-.form-container a {
-    display: block;
-    text-align: center;
-    margin-top: 10px;
-    color: #005b99;
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+}
+
+a:hover {
+    color: #007bff;
 }
