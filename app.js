@@ -14,10 +14,15 @@ mongoose.connect(process.env.MONGO_URI, {
     .then(() => console.log(' Conectado a MongoDB Atlas'))
     .catch(err => console.error(' Error en conexión Mongo:', err));
 
+app.use(express.static('static'));
+const path = require('path');
+
 // Ruta de prueba
+
 app.get('/', (req, res) => {
-    res.send('Servidor Node.js activo');
+    res.sendFile(path.join(__dirname, 'templates', 'Mainpage.html'));
 });
+
 
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
