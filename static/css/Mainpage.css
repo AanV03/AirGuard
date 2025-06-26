@@ -6,8 +6,12 @@ body {
 }
 
 .logo {
-    width: 8%;
-    height: 8%;
+    height: 50px;
+    width: auto;
+    max-width: 150px;
+    flex-shrink: 0;
+    display: block;
+    
 }
 
 .hero {
