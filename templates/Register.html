@@ -6,24 +6,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registrarse - AirGuard</title>
   <link rel="stylesheet" href="/static/css/register.css">
-  
 </head>
 
 <body>
   <div class="form-container">
+
     <h2>Crear cuenta AirGuard</h2>
-    <form method="POST" action="/register">
-      <input type="text" name="name" placeholder="Nombre completo" required>
+
+    <form method="POST" action="/api/users/register">
+      <input type="text" name="nombre" placeholder="Nombre completo" required>
       <input type="email" name="email" placeholder="Correo electrónico" required>
       <input type="password" name="password" placeholder="Contraseña" required>
       <input type="password" name="confirm_password" placeholder="Confirmar contraseña" required>
+
+      <!-- Campos ocultos para latitud y longitud -->
+      <input type="hidden" name="lat" id="lat">
+      <input type="hidden" name="long" id="long">
+
       <button type="submit">Crear cuenta</button>
     </form>
+
     <a href="/login">¿Ya tienes cuenta? Inicia sesión</a>
+
   </div>
 
   <script src="/static/js/register.js" defer></script>
-
 </body>
 
 </html>

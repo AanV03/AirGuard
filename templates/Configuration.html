@@ -15,86 +15,64 @@
     </header>
 
     <div class="layout">
+        <!-- Sidebar navegación -->
         <nav>
             <ul>
-                <li class="tab active" data-tab="estado">Estado</li>
+                <li class="tab active" data-tab="cuenta">Cuenta</li>
                 <li class="tab" data-tab="dispositivos">Dispositivos</li>
-                <li class="tab" data-tab="casa">Casa</li>
+                <li class="tab" data-tab="smarthome">Smart-Home</li>
                 <li class="tab" data-tab="horarios">Horarios</li>
-                <li class="tab" data-tab="filtros">Filtros</li>
                 <li class="tab" data-tab="usuarios">Usuarios</li>
                 <li class="tab" data-tab="soporte">Soporte</li>
                 <li class="tab" data-tab="salir">Salir</li>
             </ul>
         </nav>
 
+        <!-- Contenido principal -->
         <main>
-            <section id="estado" class="tab-content">
-                <h2>Estado</h2>
-                <button id="btn-refresh">🔄 Refrescar</button>
-                <div class="status-cards">
-                    <p>CO: <span id="co-value">--</span> ppm</p>
-                    <p>PM2.5: <span id="pm25-value">--</span> µg/m³</p>
-                    <p>Temp: <span id="temp-value">--</span> °C</p>
-                    <p>Hum: <span id="hum-value">--</span> %</p>
-                </div>
+            <!-- Cuenta -->
+            <section id="cuenta" class="tab-content">
+                <h2>Tu cuenta</h2>
+                <form id="form-cuenta">
+                    <label for="nombre">Nombre completo:</label>
+                    <input type="text" id="nombre" name="nombre">
+
+                    <label for="email">Correo electrónico:</label>
+                    <input type="email" id="email" name="email">
+
+                    <label for="password">Cambiar contraseña:</label>
+                    <input type="password" id="password" name="password" placeholder="Nueva contraseña (opcional)">
+
+                    <button type="submit">Actualizar datos</button>
+                </form>
             </section>
 
+            <!-- Dispositivos -->
             <section id="dispositivos" class="tab-content hidden">
-                <h2>Dispositivos</h2>
-                <form id="form-wifi">
-                    <label for="ssid">SSID:</label>
-                    <input type="text" id="ssid" name="ssid" placeholder="Nombre de red">
-
-                    <label for="password">Contraseña:</label>
-                    <input type="password" id="password" name="password" placeholder="••••••••">
-
-                    <label for="ip-mode">Modo IP:</label>
-                    <select id="ip-mode" name="ip_mode">
-                        <option value="dhcp">DHCP</option>
-                        <option value="static">Estática</option>
-                    </select>
-
-                    <div id="static-ip-fields" class="hidden">
-                        <label for="static-ip">IP Estática:</label>
-                        <input type="text" id="static-ip" name="static_ip" placeholder="192.168.1.50">
-                    </div>
-
-                    <button type="submit">Guardar WiFi</button>
-                </form>
+                <h2>Tus dispositivos AirGuard</h2>
+                <div id="lista-dispositivos">
+                    <!-- Aquí se listarán los dispositivos registrados -->
+                </div>
+                <button id="btn-agregar-dispositivo">+ Registrar nuevo dispositivo</button>
             </section>
 
-            <section id="casa" class="tab-content hidden">
-                <h2>Casa</h2>
-                <form id="form-casa">
-                    <label for="alias">Alias del lugar:</label>
-                    <input type="text" id="alias" name="alias" placeholder="Ej. Cocina">
-
-                    <label for="timezone">Zona horaria:</label>
-                    <input type="text" id="timezone" name="timezone" placeholder="America/Chihuahua">
-
-                    <label for="ventilation">Nivel de ventilación:</label>
-                    <select id="ventilation" name="ventilation">
-                        <option value="baja">Baja</option>
-                        <option value="media">Media</option>
-                        <option value="alta">Alta</option>
-                    </select>
-
-                    <button type="submit">Guardar Casa</button>
-                </form>
+            <!-- Smart-Home -->
+            <section id="smarthome" class="tab-content hidden">
+                <h2>Trabajando en esto...</h2>
             </section>
 
+            <!-- Horarios -->
             <section id="horarios" class="tab-content hidden">
-                <h2>Horarios</h2>
+                <h2>Horarios de monitoreo</h2>
                 <form id="form-horarios">
-                    <label for="interval">Intervalo muestreo:</label>
+                    <label for="interval">Intervalo de muestreo:</label>
                     <select id="interval" name="interval">
-                        <option value="1">1 min</option>
-                        <option value="5">5 min</option>
-                        <option value="10">10 min</option>
+                        <option value="1">Cada 1 minuto</option>
+                        <option value="5">Cada 5 minutos</option>
+                        <option value="10">Cada 10 minutos</option>
                     </select>
 
-                    <label for="active-hours">Horas activas:</label>
+                    <label for="start-time">Horario activo:</label>
                     <input type="time" id="start-time" name="start_time"> a
                     <input type="time" id="end-time" name="end_time">
 
@@ -102,52 +80,47 @@
                     <select id="active-days" name="active_days" multiple>
                         <option value="mon">Lunes</option>
                         <option value="tue">Martes</option>
+                        <option value="wed">Miércoles</option>
+                        <option value="thu">Jueves</option>
+                        <option value="fri">Viernes</option>
+                        <option value="sat">Sábado</option>
+                        <option value="sun">Domingo</option>
                     </select>
 
-                    <button type="submit">Guardar Horarios</button>
+                    <button type="submit">Guardar horarios</button>
                 </form>
             </section>
 
-            <section id="filtros" class="tab-content hidden">
-                <h2>Filtros</h2>
-                <form id="form-filtros">
-                    <label for="co-threshold">Umbral CO (ppm):</label>
-                    <input type="number" id="co-threshold" name="co_threshold">
-
-                    <label for="pm25-threshold">Umbral PM2.5 (µg/m³):</label>
-                    <input type="number" id="pm25-threshold" name="pm25_threshold">
-
-                    <label>
-                        <input type="checkbox" id="enable-sensors" name="enable_sensors" checked>
-                        Sensores activos
-                    </label>
-
-                    <button type="submit">Guardar Filtros</button>
-                </form>
-            </section>
-
+            <!-- Usuarios -->
             <section id="usuarios" class="tab-content hidden">
-                <h2>Usuarios</h2>
+                <h2>Usuarios asociados</h2>
+                <ul id="lista-usuarios">
+                    <!-- Lista dinámica de usuarios -->
+                </ul>
                 <form id="form-usuarios">
-                    <label for="admin-pass">Nueva contraseña Admin:</label>
-                    <input type="password" id="admin-pass" name="admin_pass">
-
-                    <label for="new-user">Añadir usuario:</label>
-                    <input type="text" id="new-user" name="new_user" placeholder="usuario@example.com">
-
-                    <button type="submit">Guardar Usuarios</button>
+                    <input type="email" name="new_user" placeholder="usuario@example.com" required>
+                    <select name="role">
+                        <option value="reader">Lectura</option>
+                        <option value="editor">Editor</option>
+                    </select>
+                    <button type="submit">Añadir usuario</button>
                 </form>
             </section>
 
+            <!-- Soporte -->
             <section id="soporte" class="tab-content hidden">
-                <h2>Soporte</h2>
+                <h2>Soporte técnico</h2>
+                <p>¿Tienes problemas con tu dispositivo AirGuard?</p>
+                <button>📧 Contactar soporte</button>
                 <button id="btn-restart">🔄 Reiniciar dispositivo</button>
                 <div class="logs">
+                    <h4>Logs recientes</h4>
                     <p>Log 1: ...</p>
                     <p>Log 2: ...</p>
                 </div>
             </section>
 
+            <!-- Salir -->
             <section id="salir" class="tab-content hidden">
                 <h2>Salir</h2>
                 <p>¿Seguro que quieres cerrar sesión?</p>
@@ -155,9 +128,10 @@
             </section>
         </main>
 
+        <!-- Lateral informativo -->
         <aside>
             <h2>Información Adicional</h2>
-            <p>Esta sección proporciona información detallada y guía sobre el estado mostrado.</p>
+            <p>Esta sección proporciona información contextual sobre cada módulo.</p>
         </aside>
     </div>
 

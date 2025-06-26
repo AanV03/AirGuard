@@ -1,3 +1,8 @@
+// Redirigir si no hay sesión activa
+if (!localStorage.getItem('usuarioLogueado')) {
+    window.location.href = '/login';
+}
+
 const tabContents = document.querySelectorAll('.tab-content');
 const tabs = document.querySelectorAll('.tab');
 const aside = document.querySelector('aside');
@@ -21,9 +26,23 @@ tabs.forEach(tab => {
 
         // Mostrar sección principal
         tabContents.forEach(content => content.classList.add('hidden'));
-        document.getElementById(tab.dataset.tab).classList.remove('hidden');
+        const section = document.getElementById(tab.dataset.tab);
+        section.classList.remove('hidden');
 
         // Cambiar contenido del aside
         aside.innerHTML = asideContents[tab.dataset.tab] || "<h2>Info</h2><p>Selecciona una pestaña.</p>";
+
+        // Si se hace clic en "salir", esperar el botón y vincular logout
+        if (tab.dataset.tab === "salir") {
+            setTimeout(() => {
+                const logoutBtn = document.getElementById('btn-logout');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', () => {
+                        localStorage.removeItem('usuarioLogueado');
+                        window.location.href = "/";
+                    });
+                }
+            }, 50);
+        }
     });
 });

@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const axios = require('axios');
 
 // 1) Obtener todos los usuarios
 exports.getUsers = async (req, res) => {
@@ -22,7 +23,7 @@ exports.getUserById = async (req, res) => {
     }
 };
 
-// 3) Crear un nuevo usuario
+// 3) Crear un nuevo usuario manualmente (sin geolocalización)
 exports.createUser = async (req, res) => {
     try {
         const { nombre, email, ubicacion } = req.body;
@@ -30,7 +31,6 @@ exports.createUser = async (req, res) => {
         await newUser.save();
         res.status(201).json(newUser);
     } catch (error) {
-        // Si es un error de validación de Mongoose (email duplicado, etc.)
         res.status(400).json({ error: error.message });
     }
 };
@@ -57,5 +57,55 @@ exports.deleteUser = async (req, res) => {
         res.status(200).json({ message: 'Usuario eliminado' });
     } catch (error) {
         res.status(500).json({ error: 'Error al eliminar usuario' });
+    }
+};
+
+// 6) Registrar usuario (con geolocalización)
+exports.registerUser = async (req, res) => {
+    try {
+        const { nombre, email, password, lat, long } = req.body;
+
+        const existe = await User.findOne({ email });
+        if (existe) return res.status(400).json({ error: 'Correo ya registrado' });
+
+        let ciudad = null;
+        let pais = null;
+
+        if (lat && long) {
+            const geoRes = await axios.get('https://nominatim.openstreetmap.org/reverse', {
+                params: {
+                    format: 'json',
+                    lat,
+                    lon: long,
+                    addressdetails: 1
+                },
+                headers: {
+                    'User-Agent': 'AirGuard/1.0'
+                }
+            });
+
+            const address = geoRes.data.address || {};
+            ciudad = address.city || address.town || address.village || null;
+            pais = address.country || null;
+        }
+
+        const nuevoUsuario = new User({
+            nombre,
+            email,
+            password,
+            ubicacion: {
+                lat: parseFloat(lat),
+                long: parseFloat(long),
+                ciudad,
+                pais
+            }
+        });
+
+        await nuevoUsuario.save();
+        res.status(201).json({ message: 'Usuario creado correctamente' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al registrar usuario' });
     }
 };
