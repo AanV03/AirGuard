@@ -46,3 +46,20 @@ tabs.forEach(tab => {
         }
     });
 });
+
+// Dark mode con switch
+const darkToggle = document.getElementById("dark-toggle");
+
+darkToggle.addEventListener("change", () => {
+    document.body.classList.toggle("dark-mode");
+    const modo = document.body.classList.contains("dark-mode") ? "dark" : "light";
+    localStorage.setItem("airguard_theme", modo);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const saved = localStorage.getItem("airguard_theme");
+    if (saved === "dark") {
+        document.body.classList.add("dark-mode");
+        darkToggle.checked = true;
+    }
+});
