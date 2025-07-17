@@ -1,4 +1,3 @@
-// models/User.js
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
@@ -15,6 +14,11 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    role: {
+        type: String,
+        enum: ['user', 'admin'], // <- los únicos roles válidos
+        default: 'user'          // <- cualquier usuario nuevo será 'user'
     },
     ubicacion: {
         lat: Number,

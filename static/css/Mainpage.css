@@ -98,17 +98,17 @@ header {
     border-radius: 6px;
     padding: 0.5rem 1rem;
     font-size: 0.95rem;
-    background: linear-gradient(to right, #007bff, #00c6ff);
+    background:  #1d343f;
     color: white;
     border: none;
     transition: all 0.3s ease;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 3px 6px rgba(118, 134, 191, 0.15);
 }
 
 .buttonLogin:hover,
 .buttonRegister:hover,
 .buttonShop:hover {
-    background: linear-gradient(to right, #0056b3, #0099cc);
+    background: linear-gradient(to right, #3e3e43, #314076);
     transform: translateY(-2px);
 }
 

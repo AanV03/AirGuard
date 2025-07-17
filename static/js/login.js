@@ -1,5 +1,3 @@
-// login.js
-
 document.querySelector('form').addEventListener('submit', async function (e) {
     e.preventDefault(); // evitar submit tradicional
 
@@ -26,15 +24,22 @@ document.querySelector('form').addEventListener('submit', async function (e) {
         const data = await res.json();
 
         if (res.ok) {
-            // Guardar estado de sesión
-            localStorage.setItem('usuarioLogueado', data.usuario);
-            window.location.href = '/';
+            if (!data.usuario || !data.usuario._id) {
+                alert('La respuesta del servidor no contiene el ID de usuario.');
+                return;
+            }
+
+            // Guardar sesión en localStorage
+            localStorage.setItem('usuarioLogueado', true);
+            localStorage.setItem('user_id', data.usuario._id);
+
+            window.location.href = '/configuration';
         } else {
             alert(data.error || 'Error al iniciar sesión');
         }
 
     } catch (error) {
-        console.error(error);
+        console.error('[login] Error en conexión:', error);
         alert('Error de conexión con el servidor');
     }
 });

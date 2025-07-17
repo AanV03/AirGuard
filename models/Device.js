@@ -6,13 +6,13 @@ const deviceSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    modelo: {
+    nombre: {
         type: String,
         required: true
     },
-    ubicacion: {
-        lat: Number,
-        long: Number
+    modelo: {
+        type: String,
+        default: 'AirGuard-1'
     },
     estado: {
         type: String,
@@ -25,4 +25,4 @@ const deviceSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Device', deviceSchema);
+module.exports = mongoose.model('Device', deviceSchema, 'devices');

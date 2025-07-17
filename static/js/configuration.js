@@ -1,3 +1,10 @@
+
+//  Modulos de logica separada
+import { initCuenta } from './configuration/cuenta.js';
+import { initDispositivos } from './configuration/dispositivos.js';
+import { initSmartHome } from './configuration/smarthome.js';
+
+
 // Redirigir si no hay sesión activa
 if (!localStorage.getItem('usuarioLogueado')) {
     window.location.href = '/login';
@@ -8,15 +15,15 @@ const tabs = document.querySelectorAll('.tab');
 const aside = document.querySelector('aside');
 
 const asideContents = {
-    estado: "<h2>Estado del dispositivo</h2><p>Muestra valores actuales de sensores como CO, PM2.5, temperatura y humedad.</p>",
-    dispositivos: "<h2>Red y conectividad</h2><p>Configura WiFi, IPs estáticas y nombre del dispositivo.</p>",
-    casa: "<h2>Parámetros del hogar</h2><p>Zona horaria, ubicación y condiciones ambientales típicas del lugar.</p>",
+    cuenta: "<h2>Cuenta de usuario</h2><p>Edita tu nombre, correo o cambia tu contraseña.</p>",
+    dispositivos: "<h2>Dispositvos</h2><p>Añade tus dispositivos AirGuard, modificalos y eliminalos en el momento que lo requieras</p>",
+    smarthome: "<h2>Smart-Home</h2><p>Apartado para crear tu casa virtual y poder visualzar tus dispotivos, aqui podras:.</p>",
     horarios: "<h2>Programación</h2><p>Define cuándo el dispositivo estará activo para medir o enviar datos.</p>",
-    filtros: "<h2>Umbrales y sensores</h2><p>Configura umbrales de alerta y sensores activos.</p>",
-    usuarios: "<h2>Gestión de usuarios</h2><p>Añade o cambia contraseñas de acceso.</p>",
+    usuarios: "<h2>Gestión de usuarios</h2><p>Agrega o edita usuarios vinculados.</p>",
     soporte: "<h2>Soporte técnico</h2><p>Consulta logs y realiza reinicios del dispositivo.</p>",
     salir: "<h2>Salir</h2><p>Finaliza la sesión actual de configuración.</p>"
 };
+
 
 tabs.forEach(tab => {
     tab.addEventListener('click', () => {
@@ -29,10 +36,15 @@ tabs.forEach(tab => {
         const section = document.getElementById(tab.dataset.tab);
         section.classList.remove('hidden');
 
+        // Ejecutar lógica específica por pestaña
+        if (tab.dataset.tab === 'cuenta') initCuenta();
+        if (tab.dataset.tab === 'dispositivos') initDispositivos();
+        if (tab.dataset.tab === 'smarthome') initSmartHome();
+
         // Cambiar contenido del aside
         aside.innerHTML = asideContents[tab.dataset.tab] || "<h2>Info</h2><p>Selecciona una pestaña.</p>";
 
-        // Si se hace clic en "salir", esperar el botón y vincular logout
+        // Logout
         if (tab.dataset.tab === "salir") {
             setTimeout(() => {
                 const logoutBtn = document.getElementById('btn-logout');
@@ -61,5 +73,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (saved === "dark") {
         document.body.classList.add("dark-mode");
         darkToggle.checked = true;
+    }
+    const firstTab = document.querySelector('.tab.active')?.dataset.tab;
+    if (firstTab === 'cuenta') {
+        initCuenta();
     }
 });
