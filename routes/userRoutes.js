@@ -8,6 +8,10 @@ const verifyAdmin = require('../middleware/verifyAdmin'); // ← nuevo middlewar
 router.post('/register', userController.registerUser);
 
 // Rutas protegidas: solo usuarios autenticados con JWT pueden acceder
+
+// valida la sesion activa del usuario
+router.get('/me', verifyToken, userController.getUserSession);
+
 // Pero solo los ADMIN pueden acceder a estas:
 router.get('/', verifyToken, verifyAdmin, userController.getUsers);           // ver todos
 router.delete('/:id', verifyToken, verifyAdmin, userController.deleteUser);   // eliminar

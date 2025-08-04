@@ -1,0 +1,248 @@
+/* === SOPORTE GENERAL === */
+#soporte {
+    padding: 1.5rem;
+    color: #111111;
+}
+
+#soporte h2,
+#soporte h3 {
+    margin-bottom: 0.5rem;
+    color: #3b8aff;
+}
+
+#soporte p {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+/* === BOTONES SUPERIORES === */
+.soporte-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+#btn-contactar-soporte {
+    background-color: #3b8aff;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s ease;
+}
+
+.soporte-actions button:hover {
+    background-color: #276dd6;
+}
+
+/* === CARDS DE DISPOSITIVOS === */
+.dispositivos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.card-dispositivo-soporte {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    color: #111111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.card-dispositivo-soporte:hover {
+    transform: translateY(-3px);
+}
+
+.card-dispositivo-soporte img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 0.75rem;
+    background: #eee;
+}
+
+.card-dispositivo-soporte h4 {
+    margin: 0.5rem 0 0.25rem;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.estado {
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+    color: #555;
+}
+
+.estado-activo {
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+.estado-inactivo {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.card-dispositivo-soporte button {
+    background-color: #d94444;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s ease;
+}
+
+.card-dispositivo-soporte button:hover {
+    background-color: #b93333;
+}
+
+/* === MODAL DE REPORTE === */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    color: #111111;
+    padding: 1.5rem;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #3b8aff;
+}
+
+.modal-content label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.modal-content textarea,
+.modal-content select,
+.modal-content input[type="file"] {
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 0.6rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    border: 1px solid #bbb;
+    background-color: #f5f5f5;
+    color: #111;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.modal-actions button {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-actions .btn-primary {
+    background-color: #3b8aff;
+    color: white;
+    border: none;
+}
+
+.modal-actions .btn-primary:hover {
+    background-color: #276dd6;
+}
+
+.modal-actions button[type="button"] {
+    background-color: transparent;
+    color: #444;
+    border: 1px solid #aaa;
+}
+
+.modal-actions button[type="button"]:hover {
+    background-color: #ddd;
+    color: #111;
+}
+
+/* === HIDDEN === */
+.hidden {
+    display: none !important;
+}
+
+/* === DARK MODE === */
+
+body.dark-mode #soporte {
+    color: #ffffff;
+}
+
+body.dark-mode #soporte h2,
+body.dark-mode #soporte h3 {
+    color: #3b8aff;
+}
+
+body.dark-mode .card-dispositivo-soporte {
+    background-color: #1f1f1f;
+    color: #ffffff;
+    border: 1px solid #333;
+}
+
+body.dark-mode .card-dispositivo-soporte img {
+    background: #444;
+}
+
+body.dark-mode .card-dispositivo-soporte .estado {
+    color: #aaa;
+}
+
+body.dark-mode .modal-content {
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+
+body.dark-mode .modal-content textarea,
+body.dark-mode .modal-content select,
+body.dark-mode .modal-content input[type="file"] {
+    background-color: #2a2a2a;
+    color: white;
+    border: 1px solid #444;
+}
+
+body.dark-mode .modal-actions button[type="button"] {
+    color: #ccc;
+    border-color: #555;
+}
+
+body.dark-mode .modal-actions button[type="button"]:hover {
+    background-color: #333;
+    color: white;
+}

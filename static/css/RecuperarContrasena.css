@@ -1,0 +1,146 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5rem 1rem 2rem;
+}
+
+.form-container {
+    background: white;
+    padding: 2rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h2 {
+    text-align: center;
+    color: #2a72d4;
+    margin-bottom: 25px;
+}
+
+.input-email {
+    padding: 14px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+    font-size: 1rem;
+}
+
+.input-email:focus {
+    outline: none;
+    border-color: #2a72d4;
+    box-shadow: 0 0 5px rgba(42, 114, 212, 0.3);
+}
+
+.input-email,
+.rec-btn {
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+    padding: 12px 15px;
+}
+
+.rec-btn {
+    padding: 14px;
+    background: #2a72d4;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    margin-top: 15px;
+    transition: background 0.3s;
+    font-size: 1rem;
+}
+
+.rec-btn:hover {
+    background: #1e57a5;
+}
+
+.rec-btn i {
+    font-size: 1.1rem;
+    margin-right: 4px;
+}
+
+/* === TOAST GENERAL === */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #333;
+    color: #fff;
+    padding: 0.8rem 1.2rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+    max-width: 90vw;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast.success {
+    background-color: #2ecc71;
+}
+
+.toast.error {
+    background-color: #e74c3c;
+}
+
+.toast.info {
+    background-color: #2196f3;
+    /* azul */
+}
+
+@media (max-width: 480px) {
+    main {
+        padding: 2rem 1rem 1rem;
+    }
+
+    .form-container {
+        padding: 1.5rem;
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    h2 {
+        font-size: 1.1rem;
+    }
+
+    .input-email,
+    .rec-btn {
+        font-size: 0.95rem;
+        padding: 10px 12px;
+    }
+}

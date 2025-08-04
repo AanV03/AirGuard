@@ -1,3 +1,70 @@
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+}
+
+/* ======== HEADER & NAVBAR ======== */
+header {
+  padding: 0.5rem 0;
+  box-shadow: none;
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+  background: transparent;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  position: relative;
+}
+
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+  max-width: 150px;
+  flex-shrink: 0;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #cce0ff;
+  text-decoration: none;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.back-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+}
+
+.back-btn i {
+  font-size: 1.1rem;
+  margin-right: 4px;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -7,15 +74,22 @@ body {
   padding: 0;
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 1rem 2rem;
 }
 
 .form-container {
   background: white;
-  padding: 40px 30px;
+  padding: 1rem 1.5rem;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   width: 100%;
@@ -28,22 +102,57 @@ body {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
+/* === TOAST GENERAL === */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #333;
+  color: #fff;
+  padding: 0.8rem 1.2rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 1000;
+  max-width: 90vw;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast.success {
+  background-color: #2ecc71;
+}
+
+.toast.error {
+  background-color: #e74c3c;
+}
+
+.toast.info {
+  background-color: #2196f3;
+  /* azul */
+}
+
 h2 {
   text-align: center;
   color: #2a72d4;
-  margin-bottom: 25px;
 }
 
 input {
   width: 100%;
-  padding: 12px 15px;
-  margin: 10px 0;
+  padding: 10px 12px;
+  margin: 8px 0;
   border: 1px solid #ccc;
   border-radius: 8px;
   transition: border-color 0.3s;
@@ -56,27 +165,27 @@ input:focus {
   box-shadow: 0 0 5px rgba(42, 114, 212, 0.3);
 }
 
-button {
+.create-btn {
   width: 100%;
-  padding: 14px;
+  padding: 12px;
   background: #2a72d4;
   color: white;
   font-weight: bold;
   border: none;
   border-radius: 8px;
-  margin-top: 15px;
+  margin-top: 12px;
   transition: background 0.3s;
   font-size: 1rem;
 }
 
-button:hover {
+.create-btn:hover {
   background: #1e57a5;
 }
 
 a {
   display: block;
   text-align: center;
-  margin-top: 15px;
+  padding: 0.5rem;
   color: #2a72d4;
   text-decoration: none;
   font-size: 0.95rem;
@@ -86,7 +195,36 @@ a:hover {
   text-decoration: underline;
 }
 
-.back-btn {
-  margin-top: 10px;
-  font-weight: bold;
+@media (max-width: 480px) {
+
+  input {
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+
+  .create-btn {
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .logo {
+    height: 40px;
+    max-width: 120px;
+  }
+
+  a {
+    font-size: 0.85rem;
+  }
+
+  .toast {
+    bottom: 10px;
+    right: 10px;
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
 }

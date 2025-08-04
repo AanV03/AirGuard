@@ -1,3 +1,70 @@
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+}
+
+/* ======== HEADER & NAVBAR ======== */
+header {
+  padding: 0.5rem 0;
+  box-shadow: none;
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+  background: transparent;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  position: relative;
+}
+
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+  max-width: 150px;
+  flex-shrink: 0;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #cce0ff;
+  text-decoration: none;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.back-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+}
+
+.back-btn i {
+  font-size: 1.1rem;
+  margin-right: 4px;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -7,15 +74,22 @@ body {
   padding: 0;
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem 1rem 2rem;
 }
 
 .form-container {
   background: white;
-  padding: 40px 30px;
+  padding: 2rem 3rem;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   width: 100%;
@@ -28,6 +102,7 @@ body {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -56,7 +131,7 @@ input:focus {
   box-shadow: 0 0 5px rgba(42, 114, 212, 0.3);
 }
 
-button {
+.login-button {
   width: 100%;
   padding: 14px;
   background: #2a72d4;
@@ -69,11 +144,11 @@ button {
   font-size: 1rem;
 }
 
-button:hover {
+.login-button:hover {
   background: #1e57a5;
 }
 
-a {
+.links {
   display: block;
   text-align: center;
   margin-top: 15px;
@@ -82,11 +157,72 @@ a {
   font-size: 0.95rem;
 }
 
-a:hover {
-  text-decoration: underline;
+/* === TOAST GENERAL === */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #333;
+  color: #fff;
+  padding: 0.8rem 1.2rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 1000;
+  max-width: 90vw;
 }
 
-.back-btn {
-  margin-top: 10px;
-  font-weight: bold;
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast.success {
+  background-color: #2ecc71;
+}
+
+.toast.error {
+  background-color: #e74c3c;
+}
+
+.toast.info {
+  background-color: #2196f3;
+  /* azul */
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    width: 90%;
+    padding: 30px 20px;
+    border-radius: 10px;
+  }
+
+  header {
+    padding: 0.5rem 1rem;
+  }
+
+  .logo {
+    height: 40px;
+  }
+
+  .back-btn {
+    font-size: 0.8rem;
+    padding: 4px 10px;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  input,
+  button {
+    font-size: 0.95rem;
+    padding: 10px 12px;
+  }
+
+  a {
+    font-size: 0.85rem;
+  }
 }

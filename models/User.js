@@ -20,6 +20,11 @@ const userSchema = new mongoose.Schema({
         enum: ['user', 'admin'], // <- los únicos roles válidos
         default: 'user'          // <- cualquier usuario nuevo será 'user'
     },
+    ownerId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: null // <- null = usuario padre 
+    },
     ubicacion: {
         lat: Number,
         long: Number,

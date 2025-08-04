@@ -1,0 +1,33 @@
+/* Estilos para la sección de salir */
+
+#btn-logout {
+    background-color: #e53935;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.6rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+#btn-logout:hover {
+    background-color: #c62828;
+    transform: scale(1.05);
+}
+
+#btn-logout:active {
+    transform: scale(0.97);
+}
+
+/* Dark mode (si usas) */
+body.dark-mode #salir h2,
+body.dark-mode #salir p {
+    color: #ddd;
+}
+
+body.dark-mode #btn-logout {
+    background-color: #d32f2f;
+    color: #fff;
+}

@@ -6,29 +6,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registrarse - AirGuard</title>
   <link rel="stylesheet" href="/static/css/register.css">
+
+  <!-- Bootstrap Icons desde CDN: íconos como el de basurero, lápiz, etc. -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 </head>
 
 <body>
-  <div class="form-container">
 
-    <h2>Crear cuenta AirGuard</h2>
+  <header>
+    <div class="header-container">
+      <div class="logo-wrapper">
+        <img src="/static/img/logo.png" class="logo" alt="AirGuard Logo">
+      </div>
 
-    <form method="POST" action="/api/users/register">
-      <input type="text" name="nombre" placeholder="Nombre completo" required>
-      <input type="email" name="email" placeholder="Correo electrónico" required>
-      <input type="password" name="password" placeholder="Contraseña" required>
-      <input type="password" name="confirm_password" placeholder="Confirmar contraseña" required>
+      <!-- Este nav debe estar aquí dentro -->
+      <nav id="main-menu" class="nav-buttons">
+        <a href="/" class="back-btn"><i class="bi bi-box-arrow-left"></i> Regresar a Mainpage</a>
+      </nav>
+    </div>
+  </header>
 
-      <!-- Campos ocultos para latitud y longitud -->
-      <input type="hidden" name="lat" id="lat">
-      <input type="hidden" name="long" id="long">
+  <main>
+    <div class="form-container">
 
-      <button type="submit">Crear cuenta</button>
-    </form>
-    <a href="/login">¿Ya tienes cuenta? Inicia sesión</a>
-    <a href="/" class="back-btn">← Regresar a Mainpage</a>
-  </div>
+      <h2>Crear cuenta AirGuard</h2>
 
+      <form method="POST" action="/api/users/register">
+        <input type="text" name="nombre" placeholder="Nombre completo" required>
+        <input type="email" name="email" placeholder="Correo electrónico" required>
+        <input type="password" name="password" placeholder="Contraseña" required>
+        <input type="password" name="confirm_password" placeholder="Confirmar contraseña" required>
+
+        <!-- Campos ocultos para latitud y longitud -->
+        <input type="hidden" name="lat" id="lat">
+        <input type="hidden" name="long" id="long">
+
+        <button class="create-btn" type="submit">Crear cuenta</button>
+      </form>
+      <a href="/login">¿Ya tienes cuenta? Inicia sesión</a>
+    </div>
+
+    <!-- toast general de mensaje de error o success -->
+    <div id="toast-mensaje" class="toast hidden"></div>
+  </main>
   <script src="/static/js/register.js" defer></script>
 </body>
 

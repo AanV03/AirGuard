@@ -1,0 +1,203 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: linear-gradient(to bottom, #f0f4f8, #c5dcff);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+}
+
+/* ======== HEADER & NAVBAR ======== */
+
+header {
+    background: #1b1b1b;
+    color: white;
+    padding: 1rem 0;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    position: relative;
+}
+
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.brand-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.logo {
+    height: 50px;
+    width: auto;
+    max-width: 150px;
+    flex-shrink: 0;
+}
+
+/* ======== BUTTONS ======== */
+
+.buttonLogin {
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+    background: #1d343f;
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(118, 134, 191, 0.15);
+}
+
+.buttonLogin:hover {
+    background: linear-gradient(to right, #1b1b1b, #13232a);
+    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+}
+
+/* === HAMBURGUER MENU === */
+
+#menu-toggle.hamburger {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    display: none;
+}
+
+/* === Menú navegación (desktop visible) === */
+
+#main-menu {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* === CARD DE PRODUCTOS === */
+
+.card {
+    border: none;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.card:hover {
+    transform: translateY(-6px);
+}
+
+
+/* === BOTON DE DESCRIPCION === */
+
+.btn-outline-secondary.btn-sm {
+    border-radius: 4px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-outline-secondary.btn-sm:hover {
+    background-color: #1d343f;
+    color: white;
+}
+
+.card .card-body .card.card-body {
+    background-color: #f9f9f9;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    border-left: 4px solid #1d343f;
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.collapse {
+    transition: max-height 0.3s ease;
+    overflow: hidden;
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Animación */
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === TOAST GENERAL === */
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #333;
+    color: #fff;
+    padding: 0.8rem 1.2rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+    max-width: 90vw;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast.success {
+    background-color: #2ecc71;
+}
+
+.toast.error {
+    background-color: #e74c3c;
+}
+
+.toast.info {
+    background-color: #2196f3;
+    /* azul */
+}
+
+/* Tamaño general del scroll */
+::-webkit-scrollbar {
+    width: 14px;
+    height: 10px;
+}
+
+/* Fondo del canal por donde se mueve el scroll */
+::-webkit-scrollbar-track {
+    background-color: #1b1b1b;
+}
+
+/* La parte que se arrastra */
+::-webkit-scrollbar-thumb {
+    background-color: #1d343f;
+    border-radius: 8px;
+    border: 3px solid #1b1b1b;
+    /* para separarlo visualmente del track */
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #333333;
+}

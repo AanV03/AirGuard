@@ -1,0 +1,779 @@
+/* ==== SMART-HOME ==== */
+
+/* Contenedor general de cada piso */
+.house-layout {
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-width: 670px;
+    min-height: 670px;
+    border: 3px dashed #aaa;
+    background-color: #f9f9f9;
+    overflow: auto;
+}
+
+#smarthome-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    row-gap: 0.75rem;
+}
+
+#smarthome-buttons button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin: 0;
+}
+
+#smarthome-buttons button i {
+    font-size: 1.2rem;
+}
+
+/* Estilo común (azul) para: habitación, bloque vacío, guardar */
+#add-room-btn,
+#add-structure-btn,
+#save-house-btn,
+#reset-house-btn {
+    background: linear-gradient(to right, #2a72d4, #4894e8);
+}
+
+#add-room-btn:hover,
+#add-structure-btn:hover,
+#save-house-btn:hover {
+    background: linear-gradient(to right, #1e57a5, #377ad0);
+}
+
+#reset-house-btn:hover {
+    background: linear-gradient(to right, #a51e1e, #d03737);
+}
+
+/* Contenedor de pestañas */
+#floor-tabs {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* Pestaña individual */
+.floor-tab {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    background-color: #f0f4ff;
+    color: #0c57e1;
+    border: 1px solid #a6c7ff;
+    border-radius: 8px 8px 0 0;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+/* Activa (azul) */
+.floor-tab.active {
+    background-color: #2a72d4;
+    color: white;
+    border-color: #2a72d4;
+    z-index: 2;
+}
+
+/* Botón de eliminar dentro de la pestaña */
+.floor-tab .delete-floor {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+    margin: 4px;
+}
+
+.floor-tab .delete-floor i {
+    font-size: 1rem;
+    margin-left: 4px;
+}
+
+.floor-tab.active .delete-floor i {
+    color: white;
+}
+
+.floor-tab .delete-floor:hover i {
+    color: #ff5e5e;
+}
+
+#add-floor-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    background-color: #e9ecf7;
+    color: #0c57e1;
+    border: 2px dashed #a6c7ff;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+#add-floor-btn:hover {
+    background-color: #abd4ff;
+}
+
+#add-floor-btn:active {
+    transform: scale(0.98);
+}
+
+#add-floor-btn i {
+    font-size: 1.2rem;
+}
+
+
+/* Estilos base para TODOS los bloques (habitaciones y vacíos) */
+
+.room-block {
+    position: absolute;
+    padding: 4px;
+    width: 160px;
+    height: 180px;
+    border: 2px solid #007acc;
+    background: #e8edf2;
+    border-radius: 8px;
+    box-sizing: border-box;
+    user-select: none;
+    overflow-y: auto;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilo específico solo para bloques vacíos */
+.room-block.room-block-estructura {
+    background-color: #e8edf2;
+    font-style: italic;
+    font-weight: 600;
+    overflow: hidden;
+}
+
+/* Título en habitaciones */
+.room-block:not(.room-block-estructura) h4 {
+    font-size: 1rem;
+    margin: 0 0 6px 0;
+}
+
+/* Título centrado visualmente en vacíos */
+.room-block.room-block-estructura h4 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    margin: 0;
+    padding: 0 6px;
+    pointer-events: auto;
+}
+
+.vertical-text {
+    writing-mode: sideways-lr;
+    text-orientation: mixed;
+    white-space: nowrap;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(180deg);
+    transform-origin: center;
+    font-size: 16px;
+    text-align: center;
+    font-weight: bold;
+    line-height: 1.2;
+    width: auto;
+    padding: 4px 0;
+}
+
+/* Controles compartidos de cada habitación */
+.room-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.room-controls button {
+    background: none;
+    border: none;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.room-controls .btn-delete {
+    color: #666;
+}
+
+.room-controls .btn-resize {
+    color: orange;
+}
+
+.room-block.resizing {
+    outline: 2px dashed orange;
+}
+
+/* Lecturas de sensores */
+
+.lecturas-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* dos lecturas por fila */
+    gap: 4px 8px;
+    padding: 4px 0;
+}
+
+.sensor-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sensor-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    font-weight: 500;
+    margin-bottom: 1px;
+}
+
+.sensor-bar-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.sensor-bar {
+    flex: 1;
+    height: 8px;
+    border-radius: 5px;
+    background-color: gray;
+    position: relative;
+    overflow: hidden;
+}
+
+.sensor-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: calc(var(--value, 0) * 1%);
+    width: 2px;
+    height: 100%;
+    background-color: #fff;
+}
+
+.sensor-bar-label {
+    font-size: 10px;
+    min-width: 20px;
+    text-align: right;
+}
+
+/* Colores según el estado */
+.sensor-bar.normal {
+    background-color: #4caf50;
+    /* verde */
+}
+
+.sensor-bar.moderado {
+    background-color: #ff9800;
+    /* naranja */
+}
+
+.sensor-bar.peligroso {
+    background-color: #f44336;
+    /* rojo */
+}
+
+/* Ocultar layouts de otros pisos */
+.hidden {
+    display: none !important;
+}
+
+
+/* diseño del modal de selección */
+#modal-dispositivos.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#modal-dispositivos.modal.hidden {
+    display: none;
+}
+
+#modal-dispositivos .modal-content {
+    background: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 10px;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    font-family: inherit;
+}
+
+#modal-dispositivos .modal-content h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+#modal-dispositivos #lista-dispositivos-modal {
+    padding: 0;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    list-style: none;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+#modal-dispositivos #lista-dispositivos-modal li {
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+#modal-dispositivos #lista-dispositivos-modal li:hover {
+    background-color: #e4ecf7;
+}
+
+#modal-dispositivos #lista-dispositivos-modal img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+#modal-dispositivos #lista-dispositivos-modal span {
+    font-weight: 500;
+    color: #222;
+}
+
+#modal-dispositivos .modal-actions {
+    text-align: right;
+    margin-top: 1rem;
+}
+
+#modal-dispositivos .modal-actions button {
+    background: #ccc;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+#modal-dispositivos .modal-actions button:hover {
+    background: #999;
+}
+
+/* boton de vincular dispositivo */
+.btn-vincular-dispositivo {
+    width: 100%;
+    font-size: 11px;
+    font-weight: 600;
+    color: #1f3b70;
+    background: linear-gradient(to right, #d8e8ff, #eaf3ff);
+    border: 1px solid #8bbef8;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-align: center;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.btn-vincular-dispositivo:hover {
+    background: linear-gradient(to right, #c2dcff, #d9ecff);
+    color: #0a2a60;
+    border-color: #5ea0ef;
+}
+
+/* Contenedor del dispositivo */
+
+.room-block .contenido-room {
+    display: flex;
+    gap: 6px;
+    flex: 1;
+    height: 100%;
+    align-items: stretch;
+    overflow: hidden;
+}
+
+/* Lecturas a la derecha */
+.contenido-room .lecturas-grid {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+}
+
+.dispositivo-asignado {
+    flex: 0 0 76px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    height: 100%;
+    padding: 6px 4px 4px 4px;
+    background: #d7e9f7;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+/* Imagen ocupa 60-65% del alto */
+.dispositivo-asignado img {
+    max-width: 100%;
+    max-height: 65%;
+    object-fit: contain;
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Nombre y estado */
+.dispositivo-asignado small {
+    font-size: 11px;
+    text-align: center;
+    color: #000000;
+    margin-top: 3px;
+    line-height: 1.1;
+    word-break: break-word;
+    padding: 0 2px;
+}
+
+/* Botón para quitar */
+.btn-quitar-dispositivo {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+}
+
+.btn-quitar-dispositivo i {
+    font-size: 13px;
+    color: #e74c3c;
+}
+
+
+/* ==== DARK MODE: SMART-HOME ==== */
+
+.dark-mode .house-layout {
+    background-color: #1e1e1e;
+    border-color: #444;
+}
+
+/* Unificación dark-mode: botones de smarthome-buttons */
+.dark-mode #smarthome-buttons button {
+    background: linear-gradient(to right, #444, #555);
+    color: white;
+}
+
+.dark-mode #add-room-btn:hover {
+    background: linear-gradient(to right, #1e57a5, #377ad0);
+}
+
+.dark-mode #add-structure-btn:hover {
+    background: linear-gradient(to right, #1e57a5, #377ad0);
+}
+
+.dark-mode #save-house-btn:hover {
+    background: linear-gradient(to right, #1e57a5, #377ad0);
+}
+
+.dark-mode #reset-house-btn:hover {
+    background: linear-gradient(to right, #a51e1e, #d03737);
+}
+
+.dark-mode .room-block {
+    background: #2c2f33;
+    border-color: #4fa3e3;
+    color: #f0f0f0;
+}
+
+.dark-mode .room-block h4 {
+    color: #ffffff;
+}
+
+.dark-mode .sensor-nombre {
+    color: #dddddd;
+}
+
+.dark-mode .sensor-valor {
+    color: #cccccc;
+}
+
+.dark-mode .room-controls .btn-delete {
+    color: #aaa;
+}
+
+.dark-mode .room-controls .btn-resize {
+    color: #f0ad4e;
+}
+
+/* Pestañas normales en dark mode */
+.dark-mode .floor-tab {
+    background-color: #2d2d2d;
+    color: #ccc;
+    border-color: #555;
+}
+
+/* Pestaña activa */
+.dark-mode .floor-tab.active {
+    background-color: #4fa3e3;
+    color: white;
+    border-color: #4fa3e3;
+}
+
+.floor-tab .delete-floor:hover i {
+    color: #ff5e5e;
+}
+
+/* Botón eliminar en dark */
+.dark-mode .floor-tab .delete-floor {
+    color: #aaa;
+}
+
+.dark-mode .floor-tab .delete-floor:hover i {
+    color: #ff6b6b;
+}
+
+.dark-mode .floor-tab.active .delete-floor i {
+    color: white;
+}
+
+/* Estilo para botón "Añadir piso" en dark */
+.dark-mode #add-floor-btn {
+    background-color: #1e1e1e;
+    color: #89caff;
+    border-color: #4d8ecf;
+}
+
+.dark-mode #add-floor-btn:hover {
+    background-color: #2a3a4f;
+}
+
+/* modal dark mode */
+.dark-mode #modal-dispositivos .modal-content {
+    background: #2a2a2a;
+    color: #f0f0f0;
+}
+
+.dark-mode #modal-dispositivos .modal-content h3 {
+    color: #f0f0f0;
+}
+
+.dark-mode #modal-dispositivos #lista-dispositivos-modal li {
+    background: #333;
+    color: #f0f0f0;
+    border-color: #555;
+}
+
+.dark-mode #modal-dispositivos #lista-dispositivos-modal li:hover {
+    background-color: #444;
+}
+
+.dark-mode #modal-dispositivos #lista-dispositivos-modal span {
+    color: #f0f0f0;
+}
+
+.dark-mode #modal-dispositivos .modal-actions button {
+    background: #555;
+    color: #eee;
+}
+
+.dark-mode #modal-dispositivos .modal-actions button:hover {
+    background: #777;
+}
+
+
+/* Ajustes de visibilidad en lectura */
+.dark-mode .sensor-bar-label {
+    color: #ddd;
+}
+
+/* Ajuste visual al quitar dispositivo */
+.btn-quitar-dispositivo:hover i {
+    color: #ff6b6b;
+}
+
+body.dark-mode .dispositivo-asignado {
+    background: #2e2e2e;
+}
+
+.dark-mode .btn-vincular-dispositivo {
+    background: linear-gradient(to right, #3b3f49, #2e323c);
+    color: #cdd9f5;
+    border: 1px solid #5a6e91;
+}
+
+.dark-mode .btn-vincular-dispositivo:hover {
+    background: linear-gradient(to right, #4a5060, #3b4050);
+    color: #ffffff;
+    border-color: #7ca7ff;
+}
+
+.dark-mode .dispositivo-asignado small {
+    font-size: 11px;
+    text-align: center;
+    color: #dfddf4;
+    margin-top: 3px;
+    line-height: 1.1;
+    word-break: break-word;
+    padding: 0 2px;
+}
+
+.dark-mode .scroll-hint {
+    background: rgba(33, 33, 33, 0.65);
+    color: rgb(255, 255, 255);
+    animation: fadeOut 4s ease-in-out forwards;
+}
+
+.scroll-hint {
+    position: relative;
+    min-width: 280px;
+    max-width: 95%;
+    margin: 1rem auto 1rem auto;
+    background: rgba(255, 255, 255, 0.65);
+    color: rgb(13, 20, 53);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    text-align: center;
+    animation: fadeOut 4s ease-in-out forwards;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+
+.scroll-hint.hidden {
+    display: none !important;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    80% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@media (max-width: 600px) {
+
+    /* Permitir scroll horizontal en mobile, sin romper min-width */
+    .house-layout {
+        overflow-x: auto;
+        overflow-y: auto;
+        padding: 0.5rem;
+    }
+
+    /* Que el contenedor general permita scroll */
+    #floor-container {
+        overflow-x: auto;
+    }
+
+    /* Pestañas más pequeñas, con wrap */
+    #floor-tabs {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        justify-content: center;
+    }
+
+    .floor-tab,
+    #add-floor-btn {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+    }
+
+    /* Botones agrupados */
+    #smarthome-buttons {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+
+    #smarthome-buttons button {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.9rem;
+    }
+
+    /* Escala visual de room-blocks */
+    .room-block {
+        font-size: 0.9rem;
+    }
+
+    .contenido-room {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .dispositivo-asignado {
+        flex-direction: row;
+        justify-content: flex-start;
+        width: 100%;
+        gap: 6px;
+        padding: 6px;
+    }
+
+    .dispositivo-asignado img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .sensor-bar {
+        height: 6px;
+    }
+
+    .sensor-header span,
+    .sensor-bar-label,
+    .btn-vincular-dispositivo {
+        font-size: 10px;
+    }
+
+    #modal-dispositivos .modal-content {
+        max-width: 95%;
+    }
+}

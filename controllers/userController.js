@@ -23,7 +23,6 @@ exports.getUsers = async (req, res) => {
     }
 };
 
-
 // 2) Obtener un usuario por ID
 exports.getUserById = async (req, res) => {
     try {
@@ -40,7 +39,6 @@ exports.getUserById = async (req, res) => {
         res.status(500).json({ error: 'Error al buscar usuario' });
     }
 };
-
 
 // 3) Crear un nuevo usuario manualmente (sin geolocalización)
 exports.createUser = async (req, res) => {
@@ -134,18 +132,19 @@ exports.registerUser = async (req, res) => {
 
         await nuevoUsuario.save();
 
-        // ✅ Generar token JWT al registrarse
+        // Generar token JWT al registrarse
         const token = jwt.sign(
             {
                 id: nuevoUsuario._id,
                 email: nuevoUsuario.email,
-                role: nuevoUsuario.role || 'user'
+                role: nuevoUsuario.role || 'user',
+                ownerId: nuevoUsuario.ownerId || null
             },
             process.env.JWT_SECRET,
             { expiresIn: '2h' }
         );
 
-        // ✅ Enviar cookie segura httpOnly
+        // Enviar cookie segura httpOnly
         res.cookie('token', token, {
             httpOnly: true,
             secure: false, // se puede cambiar a true en producción con HTTPS
@@ -153,7 +152,7 @@ exports.registerUser = async (req, res) => {
             maxAge: 2 * 60 * 60 * 1000 // 2 horas
         });
 
-        // ✅ Enviar respuesta con datos útiles (sin contraseña)
+        // Enviar respuesta con datos útiles (sin contraseña)
         res.status(201).json({
             message: 'Usuario registrado y autenticado',
             usuario: {
@@ -168,3 +167,22 @@ exports.registerUser = async (req, res) => {
         res.status(500).json({ error: 'Error al registrar usuario' });
     }
 };
+
+// 7) Verificar sesión activa
+exports.getUserSession = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select('nombre email role');
+        if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
+
+        res.status(200).json({
+            id: user._id,
+            nombre: user.nombre,
+            email: user.email,
+            role: user.role
+        });
+    } catch (error) {
+        console.error('[getUserSession] Error:', error);
+        res.status(500).json({ error: 'Error al verificar sesión' });
+    }
+};
+

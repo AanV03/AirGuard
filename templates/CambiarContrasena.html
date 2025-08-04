@@ -1,0 +1,34 @@
+<!-- confirmarToken.html -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Restablecer Contraseña - AirGuard</title>
+    <link rel="stylesheet" href="/static/css/CambiarContrasena.css">
+</head>
+
+<body>
+    <main>
+        <div class="form-container">
+            <h2>Restablecer contraseña</h2>
+            <form id="confirmar-reset">
+                <p>Token</p>
+                <input class="input-token" type="text" name="token" title="Este campo no puede modificarse manualmente"
+                    required />
+                <p> Ingresa tu nueva contraseña</p>
+                <input class="input-pss" type="password" name="newPassword" placeholder="Nueva contraseña" required />
+                <p> Confirma tu nueva contraseña</p>
+                <input class="input-pss" type="password" name="confirmPassword" placeholder="Confirmar nueva contraseña"
+                    required />
+                <button class="Cambiar-btn" type="submit">Cambiar contraseña</button>
+            </form>
+        </div>
+    </main>
+    <script src="/static/js/CambiarContrasena.js"></script>
+
+    <!-- toast general de mensaje de error o success -->
+    <div id="toast-mensaje" class="toast hidden"></div>
+</body>
+
+</html>

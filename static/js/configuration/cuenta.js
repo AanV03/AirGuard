@@ -1,17 +1,18 @@
-// configuration/cuenta.js
+import { authFetch } from '../utils/authFetch.js';
+
 export async function initCuenta() {
     const form = document.getElementById('form-cuenta');
     if (!form) return;
 
     const userId = localStorage.getItem('user_id');
     if (!userId) {
-        alert('No hay sesión activa');
+        mostrarToast('No hay sesión activa', 'error');
         return;
     }
 
     // Cargar datos del usuario
     try {
-        const res = await fetch(`/api/users/${userId}`);
+        const res = await authFetch(`/api/users/${userId}`);
         if (res.ok) {
             const user = await res.json();
             form.nombre.value = user.nombre || '';
@@ -36,7 +37,7 @@ export async function initCuenta() {
         if (password) data.password = password;
 
         try {
-            const res = await fetch(`/api/users/${userId}`, {
+            const res = await authFetch(`/api/users/${userId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -44,14 +45,14 @@ export async function initCuenta() {
 
             const result = await res.json();
             if (res.ok) {
-                alert('Datos actualizados correctamente');
+                mostrarToast('Datos actualizados correctamente', 'success');
                 form.password.value = '';
             } else {
-                alert(result.error || 'Error al actualizar usuario');
+                mostrarToast(result.error || 'Error al actualizar usuario', 'error');
             }
         } catch (err) {
             console.error('Error en actualización:', err);
-            alert('Error al actualizar usuario');
+            mostrarToast('Error al actualizar usuario', 'error');
         }
     });
 }

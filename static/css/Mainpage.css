@@ -13,11 +13,8 @@ img {
     border-radius: 10px;
 }
 
-section {
-    scroll-margin-top: 100px;
-}
-
 /* ======== HEADER & NAVBAR ======== */
+
 header {
     background: #1b1b1b;
     color: white;
@@ -52,7 +49,36 @@ header {
     flex-shrink: 0;
 }
 
-/* === Botón hamburguesa === */
+/* ======== BUTTONS ======== */
+
+.buttonLogin,
+.buttonRegister,
+.buttonLogout,
+.buttonConfig,
+.buttonShop {
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+    background: #1d343f;
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(118, 134, 191, 0.15);
+}
+
+.buttonLogin:hover,
+.buttonRegister:hover,
+.buttonLogout:hover,
+.buttonConfig:hover,
+.buttonShop:hover {
+    background: linear-gradient(to right, #1b1b1b, #13232a);
+    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+}
+
+/* === HAMBURGUER MENU === */
+
 #menu-toggle.hamburger {
     background: none;
     border: none;
@@ -63,65 +89,83 @@ header {
 }
 
 /* === Menú navegación (desktop visible) === */
+
 #main-menu {
     display: flex;
     gap: 0.5rem;
     align-items: center;
 }
 
-/* ======== HERO SECTION ======== */
+/* === HERO GENERAL === */
 .hero {
     height: 100vh;
-    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
     color: white;
     padding: 0 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+    overflow: hidden;
+}
+
+.hero h1 {
+    letter-spacing: 2.5px;
+    font-size: 4rem;
+    font-weight: 550;
+    margin-bottom: 1.5rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .hero h2 {
-    font-size: 3rem;
-    font-weight: bold;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    font-weight: 450;
+    margin-bottom: 1.5rem;
+    color: #ffffff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .hero p.lead {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-/* ======== BUTTONS ======== */
-.buttonLogin,
-.buttonRegister,
-.buttonShop {
-    font-weight: 500;
-    border-radius: 6px;
-    padding: 0.5rem 1rem;
-    font-size: 0.95rem;
-    background:  #1d343f;
-    color: white;
-    border: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 3px 6px rgba(118, 134, 191, 0.15);
+/* === HERO ANIMACIÓN === */
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease-out forwards;
+    animation-delay: var(--delay, 0s);
 }
 
-.buttonLogin:hover,
-.buttonRegister:hover,
-.buttonShop:hover {
-    background: linear-gradient(to right, #3e3e43, #314076);
-    transform: translateY(-2px);
+/* Animación */
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* ======== ARROW LINK ======== */
+/* ARROW LINK MEJORADO */
 .arrow-link {
     position: relative;
     display: inline-block;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     text-decoration: none;
     color: white;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     text-align: center;
     padding-top: 5px;
+    transition: transform 0.3s ease;
+}
+
+.arrow-link:hover {
+    transform: translateY(4px);
 }
 
 .arrow-v {
@@ -130,27 +174,125 @@ header {
     height: 0;
     margin: 0 auto;
     margin-top: 0.5rem;
-    border-left: 30px solid transparent;
-    border-right: 30px solid transparent;
-    border-top: 20px solid white;
+    border-left: 24px solid transparent;
+    border-right: 24px solid transparent;
+    border-top: 16px solid white;
+    animation: bounceArrow 1.5s infinite;
 }
 
-/* ======== CARDS ======== */
-.card {
-    border: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Animación de flecha */
+@keyframes bounceArrow {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(6px);
+    }
+}
+
+/* ======== SECCIÓN SOBRE AIRGUARD ======== */
+
+.sobre-airguard {
+    background: #e6ecf1;
+    padding: 6rem 1rem;
+    min-height: auto;
+    display: flex;
+    align-items: center;
+}
+
+.about-section h3 {
+    font-size: 2.25rem;
+    margin-bottom: 2rem;
+}
+
+.about-section p {
+    font-size: 1.1rem;
+    max-width: 900px;
+    margin: 0 auto 2rem;
+    color: #090909;
+}
+
+.about-section .row h5 {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+}
+
+.about-section .row p {
+    font-size: 0.95rem;
+    color: #070707;
+}
+
+/* ======== ANIMACIÓN APARICIÓN ======== */
+
+.seccion-contenido.fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUpSobre 1s ease-out forwards;
+}
+
+@keyframes fadeUpSobre {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ======== AREA Y CARDS DE FUNCIONES ======== */
+
+.function-area {
+    background: linear-gradient(to bottom, #e6ecf1, #e9edf0);
+    display: flex;
+    align-items: center;
+}
+
+.card-funciones {
     background-color: #ffffff;
-    border-radius: 12px;
-    height: 100%;
+    border-radius: 14px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    padding: 1.25rem;
 }
 
-.card:hover {
-    transform: translateY(-5px);
+.card-funciones:hover {
+    transform: translateY(-6px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* ======== BOTÓN FLOTANTE ======== */
+.card-funciones h6 {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-funciones p {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.card-funciones i {
+    font-size: 2.75rem;
+    /* Tamaño más grande */
+    margin-bottom: 0.8rem;
+    color: #0d6efd;
+    /* Azul AirGuard o uno que combine con tu esquema */
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.card-funciones:hover i {
+    transform: scale(1.15);
+    color: #084298;
+    /* Azul más oscuro al hacer hover */
+}
+
+
+/* ======== BOTÓN FLOTANTE DE CHATBOT ======== */
+
 .boton-flotante {
     position: fixed;
     bottom: 20px;
@@ -174,6 +316,67 @@ header {
 .boton-flotante:hover {
     background-color: #084298;
 }
+
+/* === TOAST GENERAL === */
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #333;
+    color: #fff;
+    padding: 0.8rem 1.2rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+    max-width: 90vw;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast.success {
+    background-color: #2ecc71;
+}
+
+.toast.error {
+    background-color: #e74c3c;
+}
+
+.toast.info {
+    background-color: #2196f3;
+    /* azul */
+}
+
+/* Tamaño general del scroll */
+::-webkit-scrollbar {
+    width: 14px;
+    height: 10px;
+}
+
+/* Fondo del canal por donde se mueve el scroll */
+::-webkit-scrollbar-track {
+    background-color: #1b1b1b;
+}
+
+/* La parte que se arrastra */
+::-webkit-scrollbar-thumb {
+    background-color: #1d343f;
+    border-radius: 8px;
+    border: 3px solid #1b1b1b;
+    /* para separarlo visualmente del track */
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #333333;
+}
+
 
 /* ======== MOBILE MENU ======== */
 @media (max-width: 768px) {
@@ -203,6 +406,12 @@ header {
     .nav-buttons button {
         width: 80%;
         margin: 0.25rem 0;
+    }
+
+    /* === HERO === */
+
+    .hero h1 {
+        font-size: 3rem;
     }
 
     .hero h2 {

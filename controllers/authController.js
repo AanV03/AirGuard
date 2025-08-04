@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const { OAuth2Client } = require('google-auth-library');
 
 /**
  * Controlador para iniciar sesión de un usuario.
@@ -28,7 +29,8 @@ exports.loginUser = async (req, res) => {
             {
                 id: user._id,
                 email: user.email,
-                role: user.role || 'user' // por si no tiene rol definido
+                role: user.role || 'user', // por si no tiene rol definido
+                ownerId: user.ownerId || null
             },
             process.env.JWT_SECRET,     // clave secreta definida en .env
             { expiresIn: '2h' }          // el token expira en 2 horas
@@ -57,3 +59,60 @@ exports.loginUser = async (req, res) => {
         res.status(500).json({ error: 'Error al iniciar sesión' });
     }
 };
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+exports.loginWithGoogle = async (req, res) => {
+    const { credential } = req.body;
+
+    try {
+        const ticket = await client.verifyIdToken({
+            idToken: credential,
+            audience: process.env.GOOGLE_CLIENT_ID
+        });
+
+        const payload = ticket.getPayload();
+        const { email, name, sub } = payload;
+
+        let user = await User.findOne({ email });
+        if (!user) {
+            user = await User.create({
+                nombre: name,
+                email,
+                googleId: sub
+            });
+        }
+
+        const token = jwt.sign(
+            {
+                id: user._id,                // igual que loginUser
+                email: user.email,
+                role: user.role || 'user'
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: '7d' }
+        );
+
+
+        res.status(200).json({
+            user: {
+                _id: user._id,
+                nombre: user.nombre,
+                email: user.email
+            },
+            token
+        });
+
+    } catch (err) {
+        console.error('[Google Auth] Error al verificar token:', err);
+        res.status(401).json({ error: 'Token de Google inválido' });
+    }
+};
+
+//  cerrar la sesion activa
+exports.logout = (req, res) => {
+    res.clearCookie('token');
+    res.status(200).json({ message: 'Sesión cerrada correctamente' });
+};
+
+

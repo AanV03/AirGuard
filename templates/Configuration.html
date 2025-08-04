@@ -5,35 +5,56 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Configuración AirGuard</title>
-    
+
     <!-- Fuente Segoe UI desde Google Fonts, con peso normal (400) y negrita (700) -->
     <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
 
     <!-- Interact.js desde CDN: librería para hacer elementos interactivos (drag, resize, etc.) -->
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
 
+    <!-- estilo general -->
     <link href="/static/css/configuration.css" rel="stylesheet">
+
+    <!-- estilo especifico de cada pestaña -->
+    <link href="/static/css/configuracion/cuenta.css" rel="stylesheet">
+    <link href="/static/css/configuracion/dispositivos.css" rel="stylesheet">
+    <link href="/static/css/configuracion/smarthome.css" rel="stylesheet">
+    <link href="/static/css/configuracion/horarios.css" rel="stylesheet">
+    <link href="/static/css/configuracion/usuarios.css" rel="stylesheet">
+    <link href="/static/css/configuracion/soporte.css" rel="stylesheet">
+    <link href="/static/css/configuracion/salir.css" rel="stylesheet">
 
     <!-- Bootstrap Icons desde CDN: íconos como el de basurero, lápiz, etc. -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 
+    <!-- Flatpickr Time Picker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+
 </head>
 
 <body>
+
     <header>
-        AirGuard Config
+        <button id="menu-toggle" class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <span class="app-title">AirGuard Config</span>
+
+
         <label class="switch">
             <input type="checkbox" id="dark-toggle">
             <span class="slider round"></span>
         </label>
-
     </header>
 
-    <div class="layout">
+    <div class="layout" id="layout-container">
+
         <!-- Sidebar navegación -->
-        <nav>
+        <nav id="nav-menu">
             <ul>
-                <li class="tab active" data-tab="cuenta">Cuenta</li>
+                <li class="tab" data-tab="cuenta">Cuenta</li>
                 <li class="tab" data-tab="dispositivos">Dispositivos</li>
                 <li class="tab" data-tab="smarthome">Smart-Home</li>
                 <li class="tab" data-tab="horarios">Horarios</li>
@@ -45,8 +66,19 @@
 
         <!-- Contenido principal -->
         <main>
+
+            <!-- Sección introductoria al módulo de configuración -->
+            <section id="intro" class="tab-content">
+                <div class="intro-mss">
+                    <h2>Bienvenido a la configuración de AirGuard</h2>
+                    <p>Selecciona una opción del menú lateral para comenzar a configurar tu cuenta, dispositivos,
+                        horarios y
+                        más.</p>
+                </div>
+            </section>
+
             <!-- Cuenta -->
-            <section id="cuenta" class="tab-content">
+            <section id="cuenta" class="tab-content hidden">
                 <h2>Tu cuenta</h2>
                 <form id="form-cuenta">
                     <label for="nombre">Nombre completo:</label>
@@ -70,83 +102,142 @@
                 <div id="lista-dispositivos">
                     <!-- Aquí se listarán los dispositivos registrados -->
                 </div>
-
             </section>
 
             <!-- Smart-Home -->
             <section id="smarthome" class="tab-content hidden">
                 <h2>Casa interactiva</h2>
 
-                <!-- Botón añadir habitación -->
-                <button id="add-room-btn">Añadir habitación</button>
+                <div id="smarthome-buttons">
+                    <!-- Boton añadir habitacion -->
+                    <button id="add-room-btn"><i class="bi bi-plus-lg"></i> habitación</button>
+
+                    <!-- Boton añadir bloque vacio para diseño -->
+                    <button id="add-structure-btn"><i class="bi bi-plus-lg"></i> bloque vacío</button>
+
+                    <!-- Botón para resetear toda la casa -->
+                    <button id="reset-house-btn"><i class="bi bi-trash3-fill"></i> Resetear Casa</button>
+
+                    <!-- Boton para guardar la casa -->
+                    <button id="save-house-btn"><i class="bi bi-save"></i> Guardar Casa</button>
+                </div>
+
+                <!-- mensaje de ayuda en pantallas pequeñas -->
+                <div id="scroll-hint" class="scroll-hint hidden">
+                    <p>🔄 Desliza lateralmente para explorar la casa</p>
+                </div>
 
                 <!-- Selector de pisos -->
                 <div id="floor-tabs" class="floor-tabs">
-                    <button id="add-floor-btn"><i class="bi bi-plus-square-dotted"></i></button>
+                    <button id="add-floor-btn"><i class="bi bi-plus-lg"></i> Añadir piso </button>
                 </div>
 
                 <!-- Contenedores de pisos -->
                 <div id="floor-container">
-
+                    <!-- se generan dinamicamente -->
                 </div>
             </section>
 
             <!-- Horarios -->
             <section id="horarios" class="tab-content hidden">
+
                 <h2>Horarios de monitoreo</h2>
-                <form id="form-horarios">
-                    <label for="interval">Intervalo de muestreo:</label>
-                    <select id="interval" name="interval">
-                        <option value="1">Cada 1 minuto</option>
-                        <option value="5">Cada 5 minutos</option>
-                        <option value="10">Cada 10 minutos</option>
-                    </select>
 
-                    <label for="start-time">Horario activo:</label>
-                    <input type="time" id="start-time" name="start_time"> a
-                    <input type="time" id="end-time" name="end_time">
+                <form id="form-horarios" class="horarios-form">
 
-                    <label for="active-days">Días activos:</label>
-                    <select id="active-days" name="active_days" multiple>
-                        <option value="mon">Lunes</option>
-                        <option value="tue">Martes</option>
-                        <option value="wed">Miércoles</option>
-                        <option value="thu">Jueves</option>
-                        <option value="fri">Viernes</option>
-                        <option value="sat">Sábado</option>
-                        <option value="sun">Domingo</option>
-                    </select>
+                    <div class="form-group">
+                        <label for="device-select">Dispositivo:</label>
+                        <select id="device-select" name="device_id">
+                            <option value="">Selecciona un dispositivo</option>
+                            <!-- Opciones dinámicas -->
+                        </select>
+                    </div>
 
-                    <button type="submit">Guardar horarios</button>
+                    <div class="form-group">
+                        <label for="interval">Intervalo de muestreo:</label>
+                        <select id="interval" name="interval">
+                            <option value="1">Cada 1 minuto</option>
+                            <option value="5">Cada 5 minutos</option>
+                            <option value="10">Cada 10 minutos</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Horario activo:</label>
+                        <div class="time-range">
+                            <input type="time" id="start-time" name="start_time">
+                            <span>a</span>
+                            <input type="time" id="end-time" name="end_time">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Días activos:</label>
+                        <div class="checkbox-dias">
+                            <label><input type="checkbox" name="dias" value="mon"><span>Lunes</span></label>
+                            <label><input type="checkbox" name="dias" value="tue"> <span>Martes</span></label>
+                            <label><input type="checkbox" name="dias" value="wed"> <span>Miércoles</span></label>
+                            <label><input type="checkbox" name="dias" value="thu"> <span>Jueves</span></label>
+                            <label><input type="checkbox" name="dias" value="fri"> <span>Viernes</span></label>
+                            <label><input type="checkbox" name="dias" value="sat"> <span>Sábado</span></label>
+                            <label><input type="checkbox" name="dias" value="sun"> <span>Domingo</span></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descripcion">Descripción (opcional):</label>
+                        <textarea id="descripcion" name="descripcion" rows="2"
+                            placeholder="Ej: Horario nocturno para monitoreo continuo..."></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit">Guardar horarios</button>
+                    </div>
                 </form>
+
+                <div id="horarios-lista">
+                    <!-- mostrara dinamicamente los horarios de cada dispositivo -->
+                </div>
             </section>
 
             <!-- Usuarios -->
             <section id="usuarios" class="tab-content hidden">
                 <h2>Usuarios asociados</h2>
-                <ul id="lista-usuarios">
-                    <!-- Lista dinámica de usuarios -->
-                </ul>
-                <form id="form-usuarios">
-                    <input type="email" name="new_user" placeholder="usuario@example.com" required>
-                    <select name="role">
-                        <option value="reader">Lectura</option>
-                        <option value="editor">Editor</option>
-                    </select>
-                    <button type="submit">Añadir usuario</button>
+
+                <form id="form-usuarios" class="usuarios-form">
+                    <div class="form-group">
+                        <label for="nombre-hijo">Nombre:</label>
+                        <input type="text" id="nombre-hijo" name="nombre" required placeholder="Ej: Juan Pérez">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email-hijo">Correo electrónico:</label>
+                        <input type="email" id="email-hijo" name="email" required placeholder="usuario@example.com">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Añadir usuario</button>
+                    </div>
                 </form>
+
+                <ul id="lista-usuarios">
+                    <!-- Lista dinámica de subusuarios -->
+                </ul>
             </section>
 
             <!-- Soporte -->
             <section id="soporte" class="tab-content hidden">
                 <h2>Soporte técnico</h2>
                 <p>¿Tienes problemas con tu dispositivo AirGuard?</p>
-                <button>📧 Contactar soporte</button>
-                <button id="btn-restart">🔄 Reiniciar dispositivo</button>
-                <div class="logs">
-                    <h4>Logs recientes</h4>
-                    <p>Log 1: ...</p>
-                    <p>Log 2: ...</p>
+
+                <div class="soporte-actions">
+                    <button id="btn-contactar-soporte"><i class="bi bi-question-circle-fill"></i> Contactar
+                        soporte</button>
+                </div>
+
+                <h3>Dispositivos disponibles</h3>
+                <div id="dispositivos-reinicio" class="dispositivos-grid">
+                    <!-- Aquí se inyectan las cards dinámicamente -->
                 </div>
             </section>
 
@@ -156,6 +247,10 @@
                 <p>¿Seguro que quieres cerrar sesión?</p>
                 <button id="btn-logout">Sí, salir</button>
             </section>
+
+            <!-- toast general de mensaje de error o success -->
+            <div id="toast-mensaje" class="toast hidden"></div>
+
         </main>
 
         <!-- Lateral informativo -->
@@ -164,6 +259,108 @@
             <p>Esta sección proporciona información contextual sobre cada módulo.</p>
         </aside>
     </div>
+
+    <!-- modal de edicion de dispositivo para pantallas pequeñas -->
+    <div id="modal-editar-dispositivo" class="modal hidden">
+        <div class="modal-content">
+            <button id="cerrar-modal" class="cerrar-modal" title="Cerrar">
+                <i class="bi bi-x-circle-fill"></i>
+            </button>
+            <h3>Editar dispositivo</h3>
+            <form id="modal-form-edit">
+                <input type="text" name="nombre" required>
+                <input type="text" name="modelo" required>
+                <button type="submit">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Modal para asignar dispositivo -->
+    <div id="modal-dispositivos" class="modal hidden">
+        <div class="modal-content">
+            <h3>Asignar dispositivo</h3>
+            <ul id="lista-dispositivos-modal"
+                style="max-height: 250px; overflow-y: auto; padding: 0; list-style: none;"></ul>
+            <div class="modal-actions" style="text-align: right; margin-top: 1rem;">
+                <button id="cerrar-modal-dispositivos">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal para modificar la informacion de usuarios hijos -->
+    <div id="modal-editar-usuario" class="modal hidden">
+        <div class="modal-content">
+            <h3>Editar Usuario Hijo</h3>
+            <form id="form-editar-usuario">
+                <input type="text" id="editar-nombre" placeholder="Nombre" required />
+                <input type="email" id="editar-email" placeholder="Correo electrónico" required />
+                <div class="acciones">
+                    <button type="submit" class="btn-primary">Guardar cambios</button>
+                    <button type="button" id="cancelar-edicion">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de reporte de soporte -->
+    <div id="modal-reporte" class="modal hidden">
+        <div class="modal-content">
+            <h3>Enviar reporte a soporte</h3>
+            <form id="form-reporte">
+
+                <!-- Tipo de error -->
+                <label for="tipo-error">Tipo de error:</label>
+                <select id="tipo-error" required>
+                    <option value="">Selecciona una opción...</option>
+                    <option value="error_dispositivo">Error en dispositivo</option>
+                    <option value="error_cuenta">Error en la cuenta</option>
+                    <option value="error_subusuarios">Error con subusuarios</option>
+                    <option value="error_pagina">Error en la página</option>
+                </select>
+
+                <!-- Grupo: Error en dispositivo -->
+                <div id="grupo-dispositivo" class="conditional-group hidden">
+                    <label for="dispositivo-reporte">Dispositivo:</label>
+                    <select id="dispositivo-reporte"></select>
+                </div>
+
+                <!-- Grupo: Error con subusuario -->
+                <div id="grupo-subusuario" class="conditional-group hidden">
+                    <label for="subusuario-reporte">Subusuario afectado:</label>
+                    <select id="subusuario-reporte"></select>
+                </div>
+
+                <!-- Grupo: Error en la cuenta (solo texto) -->
+                <div id="grupo-error-cuenta" class="conditional-group hidden">
+                    <p>Describe brevemente qué parte de la cuenta no funciona o no puedes modificar.</p>
+                </div>
+
+                <!-- Grupo: Error en la página (texto + imagen opcional) -->
+                <div id="grupo-error-pagina" class="conditional-group hidden">
+                    <p>Describe el error visual o funcional en la página. Puedes adjuntar una imagen si lo deseas.</p>
+                </div>
+
+                <!-- Carga de imagen -->
+                <div id="grupo-imagen" class="conditional-group hidden">
+                    <label for="captura-reporte">Adjuntar imagen (opcional):</label>
+                    <input type="file" id="captura-reporte" name="imagen" accept="image/*">
+                </div>
+
+                <!-- Descripción -->
+                <label for="descripcion-problema">Descripción del problema:</label>
+                <textarea id="descripcion-problema" rows="4" required></textarea>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Enviar</button>
+                    <button type="button" id="cancelar-reporte">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Flatpickr script -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script type="module" src="/static/js/configuration.js" defer></script>
 </body>

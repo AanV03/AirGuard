@@ -1,0 +1,422 @@
+/*====DISPOSITIVOS====*/
+
+#dispositivos {
+    box-sizing: border-box;
+}
+
+#dispositivos #btn-agregar-dispositivo {
+    background: linear-gradient(to right, #2a72d4, #4894e8);
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+#dispositivos #btn-agregar-dispositivo:hover {
+    background: linear-gradient(to right, #1e57a5, #377ad0);
+}
+
+#dispositivos #form-dispositivo {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 1.5rem auto;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+#form-dispositivo input,
+#form-dispositivo select {
+    padding: 0.6rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: border-color 0.2s;
+    margin-bottom: 0.75rem;
+    width: 95%;
+}
+
+#form-dispositivo button[type="submit"] {
+    margin-top: 1rem;
+    background: linear-gradient(to right, #2a72d4, #4894e8);
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 98%;
+}
+
+#form-dispositivo button[type="submit"]:hover {
+    background: linear-gradient(to right, #1e57a5, #377ad0);
+}
+
+.card-dispositivo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(66, 139, 255, 0.35);
+    transition: box-shadow 0.2s ease;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+    position: relative;
+    max-width: 650px;
+    animation: fadeInRight 0.5s ease-out;
+    flex-wrap: wrap;
+}
+
+.dispositivo-img img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 10px;
+    display: block;
+}
+
+.dispositivo-info {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    line-height: 1.2;
+}
+
+.dispositivo-info h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.dispositivo-info p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.dispositivo-form {
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.dispositivo-form.hidden {
+    display: none;
+}
+
+.dispositivo-form input {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    width: 90%;
+}
+
+.dispositivo-form button {
+    align-self: flex-start;
+    padding: 0.4rem 1rem;
+    font-weight: bold;
+    background: #2a72d4;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.acciones-dispositivo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon.editar {
+    background: transparent;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: #444;
+    padding: 0.25rem;
+    transition: color 0.2s ease;
+}
+
+.btn-icon.editar:hover {
+    color: #2a72d4;
+}
+
+.btn-icon.eliminar {
+    background: transparent;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: #444;
+    padding: 0.25rem;
+    transition: color 0.2s ease;
+}
+
+.btn-icon.eliminar:hover {
+    color: #aa1616;
+}
+
+.dispositivo-fecha {
+    font-size: 0.8rem;
+    color: #999;
+    margin-top: 0.25rem;
+}
+
+/* diseño del modal para el formulario en pantallas pequeñas */
+
+#modal-editar-dispositivo.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+    animation: fadeInRight 0.3s ease;
+}
+
+#modal-editar-dispositivo.hidden {
+    display: none !important;
+}
+
+#modal-editar-dispositivo .modal-content {
+    position: relative;
+    background-color: #ffffff;
+    padding: 2rem 1.5rem 1.5rem;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    color: #222;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    animation: fadeInRight 0.3s ease;
+}
+
+#modal-editar-dispositivo h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+    color: #2a72d4;
+    text-align: center;
+}
+
+#modal-editar-dispositivo form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+#modal-editar-dispositivo input {
+    padding: 0.6rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    color: #222;
+    font-size: 1rem;
+}
+
+#modal-editar-dispositivo button[type="submit"] {
+    background: linear-gradient(to right, #2a72d4, #4ca0ff);
+    border: none;
+    color: white;
+    font-weight: bold;
+    padding: 0.7rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+#modal-editar-dispositivo button[type="submit"]:hover {
+    background: linear-gradient(to right, #1e57a5, #3b85d1);
+}
+
+#modal-editar-dispositivo .cerrar-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    z-index: 10;
+}
+
+#modal-editar-dispositivo .cerrar-modal:hover {
+    color: #111;
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.card-dispositivo {
+    opacity: 0;
+    animation: fadeInRight 0.4s ease-out forwards;
+}
+
+
+
+/* ==== MODO OSCURO: DISPOSITIVOS ==== */
+
+body.dark-mode #dispositivos #btn-agregar-dispositivo {
+    background: linear-gradient(to right, #2a72d4, #4894e8);
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+body.dark-mode #dispositivos #btn-agregar-dispositivo:hover {
+    background: linear-gradient(to right, #1e57a5, #377ad0);
+}
+
+body.dark-mode #dispositivos #form-dispositivo {
+    background-color: #1f1f1f;
+    border: 1px solid #444;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+body.dark-mode #dispositivos #form-dispositivo input,
+body.dark-mode #dispositivos #form-dispositivo select {
+    background-color: #2f2f2f;
+    color: #f1f1f1;
+    border: 1px solid #555;
+}
+
+body.dark-mode #dispositivos #form-dispositivo input::placeholder {
+    color: #aaa;
+}
+
+body.dark-mode #dispositivos #form-dispositivo button[type="submit"] {
+    background: linear-gradient(to right, #2a72d4, #4894e8);
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+body.dark-mode #dispositivos #form-dispositivo button[type="submit"]:hover {
+    background: linear-gradient(to right, #1e57a5, #377ad0);
+}
+
+body.dark-mode #dispositivos .card-dispositivo {
+    background-color: #1a1a1a;
+    border-color: #333;
+    color: #e5e5e5;
+    box-shadow: 0 4px 12px rgba(66, 139, 255, 0.35);
+    transition: box-shadow 0.2s ease;
+}
+
+body.dark-mode #dispositivos .dispositivo-form input {
+    background: #2a2a2a;
+    color: #fff;
+    border: 1px solid #444;
+}
+
+body.dark-mode #dispositivos .btn-icon.editar:hover {
+    color: #5e27ab;
+}
+
+body.dark-mode #dispositivos .btn-icon.eliminar:hover {
+    color: #ab2424;
+}
+
+body.dark-mode #dispositivos .dispositivo-fecha {
+    color: #888;
+}
+
+body.dark-mode #modal-editar-dispositivo .modal-content {
+    background: #1a1a1a;
+    color: #f1f1f1;
+}
+
+body.dark-mode #modal-editar-dispositivo form input {
+    background: #2a2a2a;
+    color: #f1f1f1;
+    border: 1px solid #444;
+}
+
+body.dark-mode #modal-editar-dispositivo .cerrar-modal {
+    color: #aaa;
+}
+
+/* media queries para pantallas muy pequeñas */
+
+@media (max-width: 600px) {
+    .card-dispositivo {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        max-width: 100%;
+        padding: 1rem;
+    }
+
+    .dispositivo-img img {
+        width: 80px;
+        height: auto;
+    }
+
+    .dispositivo-info {
+        align-items: center;
+        justify-content: center;
+        flex: unset;
+    }
+
+    .acciones-dispositivo {
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 0.5rem;
+        gap: 1rem;
+    }
+
+    .dispositivo-form {
+        width: 100%;
+        align-items: center;
+    }
+
+    .dispositivo-form input {
+        width: 100%;
+    }
+
+    .dispositivo-form button {
+        width: 100%;
+    }
+}

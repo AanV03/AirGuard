@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Recuperar Contraseña - AirGuard</title>
+    <link rel="stylesheet" href="/static/css/RecuperarContrasena.css">
+
+    <!-- Bootstrap Icons desde CDN: íconos como el de basurero, lápiz, etc. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+</head>
+
+<body>
+    <main>
+        <div class="form-container">
+            <h2>Recuperar contraseña</h2>
+            <form id="solicitar-reset">
+                <input class="input-email" type="email" name="email" placeholder="Correo electrónico" required />
+                <input class="input-email" type="email" name="confirmEmail" placeholder="Confirmar correo electrónico"
+                    required />
+                <button class="rec-btn" type="submit"><i class="bi bi-send"></i> Enviar enlace de recuperación</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- toast general de mensaje de error o success -->
+    <div id="toast-mensaje" class="toast hidden"></div>
+    
+    <script src="/static/js/RecuperarContrasena.js"></script>
+</body>
+
+</html>

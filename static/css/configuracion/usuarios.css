@@ -1,0 +1,416 @@
+.usuarios-form {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    background: #ffffff;
+    padding: 1.2rem;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    margin-top: 1rem;
+}
+
+.usuarios-form .form-group {
+    flex: 1 1 220px;
+    display: flex;
+    flex-direction: column;
+}
+
+.usuarios-form label {
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    color: #333;
+}
+
+.usuarios-form input {
+    padding: 0.55rem 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.usuarios-form .form-actions {
+    flex: 1 1 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Estilo botón primario */
+.btn-primary {
+    background-color: #2a72d4;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.4rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #1e5db4;
+}
+
+/* Grupo de botones */
+.usuario-card .acciones {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Botón editar */
+.usuario-card .btn-editar {
+    background: transparent;
+    border: none;
+    color: #4a90e2;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.usuario-card .btn-editar:hover {
+    color: #1a63c3;
+}
+
+/* Ya tenías esto, pero lo afinamos */
+.usuario-card .btn-eliminar {
+    background: transparent;
+    border: none;
+    color: #d94343;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.usuario-card .btn-eliminar:hover {
+    color: #b83030;
+}
+
+#lista-usuarios {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding: 0;
+}
+
+#lista-usuarios li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.usuario-card {
+    background: #ffffff;
+    border: 1px solid #e1e7f0;
+    border-left: 6px solid #2a72d4;
+    border-radius: 10px;
+    padding: 1rem;
+    padding-right: 3rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s ease;
+    position: relative;
+}
+
+.usuario-card:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.usuario-card .nombre {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2a72d4;
+}
+
+.usuario-card .email {
+    margin-top: 0.2rem;
+    font-size: 0.92rem;
+    color: #444;
+}
+
+.usuario-card .acciones {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.usuario-card {
+    animation: fadeInUp 0.5s ease both;
+}
+
+/* diseño del modal de modificacion de usuario */
+
+#modal-editar-usuario {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+}
+
+#modal-editar-usuario.hidden {
+    display: none;
+}
+
+#modal-editar-usuario .modal-content {
+    background: var(--card-bg, #fff);
+    color: var(--text-color, #000);
+    padding: 2rem;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#modal-editar-usuario h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-color, #000);
+}
+
+#modal-editar-usuario form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+#modal-editar-usuario input {
+    padding: 0.6rem 0.9rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+    color: #333;
+    transition: border 0.2s ease;
+}
+
+#modal-editar-usuario input:focus {
+    border-color: var(--primary-color, #2a72d4);
+    outline: none;
+}
+
+#modal-editar-usuario .acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    margin-top: 1rem;
+}
+
+#modal-editar-usuario .acciones button {
+    padding: 0.55rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+}
+
+#modal-editar-usuario .acciones .btn-primary {
+    background-color: var(--primary-color, #2a72d4);
+    color: white;
+}
+
+#modal-editar-usuario .acciones #cancelar-edicion {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==== MODO OSCURO COMPLETO ==== */
+body.dark-mode #usuarios {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+body.dark-mode .tab-content {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+body.dark-mode .usuarios-form {
+    background: #1a1a1a;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode .usuarios-form label {
+    color: #ccc;
+}
+
+body.dark-mode .usuarios-form input {
+    background: #2a2a2a;
+    border: 1px solid #555;
+    color: #eee;
+    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+body.dark-mode input::placeholder {
+    color: #888;
+}
+
+body.dark-mode input:focus {
+    border-color: #4dabff;
+    background: #2b2b2b;
+    outline: none;
+}
+
+body.dark-mode .btn-primary {
+    background-color: #3a8dee;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.3s ease;
+}
+
+body.dark-mode .btn-primary:hover {
+    background-color: #2974c4;
+}
+
+/* Lista y tarjetas de usuario */
+body.dark-mode #lista-usuarios {
+    background: transparent;
+}
+
+body.dark-mode .usuario-card {
+    background: #1f1f1f;
+    border: 1px solid #2a2a2a;
+    border-left: 6px solid #4dabff;
+    color: #e0e0e0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease, border 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode .usuario-card:hover {
+    box-shadow: 0 4px 12px rgba(42, 114, 212, 0.2);
+    transform: scale(1.05);
+}
+
+body.dark-mode .usuario-card .nombre {
+    color: #4dabff;
+}
+
+body.dark-mode .usuario-card .email {
+    color: #aaa;
+}
+
+body.dark-mode .usuario-card .acciones {
+    background: transparent;
+}
+
+/* Botones editar/eliminar */
+body.dark-mode .usuario-card .btn-editar {
+    color: #ba6efc;
+    background: transparent;
+}
+
+body.dark-mode .usuario-card .btn-editar:hover {
+    color: #9c2efb;
+}
+
+body.dark-mode .usuario-card .btn-eliminar {
+    color: #ff6666;
+    background: transparent;
+}
+
+body.dark-mode .usuario-card .btn-eliminar:hover {
+    color: #e53935;
+}
+
+/* Transiciones suaves globales */
+body.dark-mode,
+body.dark-mode input,
+body.dark-mode .usuario-card,
+body.dark-mode .usuarios-form {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* modal en modo oscuro */
+
+body.dark-mode #modal-editar-usuario .modal-content {
+    background: #1f1f1f;
+    color: #e0e0e0;
+}
+
+body.dark-mode #modal-editar-usuario input {
+    background: #2b2b2b;
+    color: #e0e0e0;
+    border: 1px solid #555;
+}
+
+body.dark-mode #modal-editar-usuario input::placeholder {
+    color: #999;
+}
+
+body.dark-mode #modal-editar-usuario .acciones #cancelar-edicion {
+    background-color: #333;
+    color: #eee;
+}
+
+body.dark-mode #modal-editar-usuario h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-color, #ffffff);
+}
+
+@media (max-width: 480px) {
+    .usuarios-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .usuarios-form .form-group {
+        flex: 1 1 100% !important;
+        width: 100%;
+    }
+
+    .usuarios-form input {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .usuarios-form .form-actions {
+        justify-content: center;
+    }
+
+    #lista-usuarios {
+        grid-template-columns: 1fr;
+        /* una sola columna */
+    }
+
+    .usuario-card {
+        padding: 1rem;
+        padding-inline: 1rem 3rem;
+    }
+
+    body.dark-mode .usuario-card .acciones {
+        background: rgba(31, 31, 31, 0.9);
+    }
+
+    .usuario-card .nombre,
+    .usuario-card .email {
+        word-break: break-word;
+    }
+}
