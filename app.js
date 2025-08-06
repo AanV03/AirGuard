@@ -65,7 +65,7 @@ const usuarioRoutes = require('./routes/usuariosRoutes');
 const soporteRoutes = require('./routes/soporteRoutes');
 const recuperarRoutes = require('./routes/RecuperarContrasenaRoutes');
 const cambiarContrasenaRoutes = require('./routes/CambiarContrasenaRoutes');
-const chatbotRoutes = require('./routes/chatbotRoutes');
+const chatbotRoutes = require('./routes/ChatBotRoutes');
 
 app.use('/api/chatbot', chatbotRoutes); // maneja las rutas de chatbot
 app.use('/api', cambiarContrasenaRoutes); // Ruta para cambiar la contrasena del usuario
