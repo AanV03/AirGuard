@@ -19,6 +19,15 @@ const deviceSchema = new mongoose.Schema({
         enum: ['activo', 'inactivo', 'mantenimiento'],
         default: 'activo'
     },
+    horarioActivo: {
+        type: Boolean,
+        default: false
+    },
+    comando: {
+        type: String,
+        enum: ['reiniciar', null],
+        default: null
+    },
     fecha_registro: {
         type: Date,
         default: Date.now

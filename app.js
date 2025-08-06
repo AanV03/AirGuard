@@ -2,12 +2,11 @@ require('dotenv').config(); // Carga variables del .env
 
 const express = require('express');
 const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser'); // es clave para leer cookies
+const cookieParser = require('cookie-parser');
 const verifyOwner = require('./middleware/verifyOwner');
 const verifyToken = require('./middleware/verifyToken');
 
 const app = express();
-const port = process.env.PORT || 3000;
 
 const cors = require('cors');
 app.use(cors());
@@ -83,10 +82,13 @@ app.use((req, res) => {
     res.status(404).send('Página no encontrada');
 });
 
-
 require('./jobs/updateDeviceStates');
 
-// Levantar servidor
-app.listen(port, () => {
-    console.log(` Servidor corriendo en http://localhost:${port}`);
+const PORT = process.env.PORT || 3000;
+const HOST = '0.0.0.0';
+
+app.listen(PORT, HOST, () => {
+    console.log(`Servidor corriendo en http://${HOST}:${PORT}`);
 });
+
+

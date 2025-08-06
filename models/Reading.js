@@ -27,4 +27,4 @@ const readingSchema = new mongoose.Schema({
     IAQ: Number
 });
 
-module.exports = mongoose.model('Reading', readingSchema);
+module.exports = mongoose.model('Reading', readingSchema, 'readings');

@@ -1,4 +1,6 @@
 const Home = require('../models/Home');
+const Reading = require('../models/Reading');
+
 
 // Obtener layout del usuario
 exports.getLayout = async (req, res) => {
@@ -58,4 +60,44 @@ exports.deleteLayout = async (req, res) => {
     }
 };
 
+// Obtener última lectura por dispositivo
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
+exports.getLastReadingByDispositivo_id = async (req, res) => {
+    try {
+        const { dispositivo_id } = req.params;
+
+        if (!ObjectId.isValid(dispositivo_id)) {
+            return res.status(400).json({ error: 'ID de dispositivo inválido' });
+        }
+
+        console.log('[getLastReading] buscando:', dispositivo_id);
+
+        const lectura = await Reading.findOne({
+            dispositivo_id: new ObjectId(dispositivo_id)
+        }).sort({ timestamp: -1 });
+
+        if (!lectura) {
+            return res.status(404).json({ error: 'No hay lecturas registradas para este dispositivo' });
+        }
+
+        const datos = {
+            CO: lectura.CO,
+            PM1_0: lectura.PM1_0,
+            PM2_5: lectura.PM2_5,
+            PM10: lectura.PM10,
+            Humedad: lectura.Humedad,
+            Temperatura: lectura.Temperatura,
+            VOCs: lectura.VOCs,
+            H2: lectura.H2,
+            CH4: lectura.CH4,
+            IAQ: lectura.IAQ
+        };
+
+        res.status(200).json(datos);
+    } catch (err) {
+        console.error('[getLastReadingByDispositivo_id]', err);
+        res.status(500).json({ error: 'Error al obtener la lectura' });
+    }
+};

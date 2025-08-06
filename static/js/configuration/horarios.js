@@ -54,7 +54,7 @@ async function mostrarHorarios() {
         <h4>${nombre}</h4>
         <div class="contenido-horario">
             <div class="dispositivo-img-horario">
-                <img src="/static/img/Dispositivo.png" alt="Dispositivo" title="Dispositivo">
+                <img src="/static/img/DispositivoBlanco_Azul.png" alt="Dispositivo" title="Dispositivo">
             </div>
             <div class="detalle-horario">
                 <p><strong>Días:</strong> ${dias}</p>
@@ -81,7 +81,7 @@ async function mostrarHorarios() {
 }
 
 export async function initHorarios() {
-    dispositivosEnHorarios = await obtenerDispositivos(); // ← se llena UNA vez
+    dispositivosEnHorarios = await obtenerDispositivos(); 
     cargarDispositivosEnHorario();
 
     const form = document.getElementById("form-horarios");
@@ -100,12 +100,12 @@ export async function initHorarios() {
         let startTime = document.getElementById("start-time").value;
         let endTime = document.getElementById("end-time").value;
 
-        // 🔍 Validación UX de rango parcial
+        // Validación UX de rango parcial
         if (startTime === "00:00" && endTime === "12:00") {
             mostrarToast("Este horario solo cubre hasta el mediodía. Si deseas monitoreo 24 horas, usa de 00:00 a 23:59.",'info');
         }
 
-        // 🛠 Interpretar '00:00 a 00:00' como 'todo el día'
+        // Interpretar '00:00 a 00:00' como 'todo el día'
         if (startTime === "00:00" && endTime === "00:00") {
             endTime = "23:59";
         }

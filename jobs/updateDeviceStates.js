@@ -15,28 +15,34 @@ async function actualizarEstadosDispositivos() {
     const schedules = await Schedule.find({});
     const estadosPorDispositivo = {};
 
-    // Agrupar por dispositivo y validar si al menos un horario es activo
+    // Verificar si cada dispositivo tiene al menos un horario activo ahora
     schedules.forEach(s => {
         const id = s.deviceId.toString();
         const estaActivo = s.activeDays.includes(dia) && s.startTime <= hora && hora <= s.endTime;
 
         if (estaActivo) {
-            estadosPorDispositivo[id] = 'activo';
+            estadosPorDispositivo[id] = true;
         } else if (!(id in estadosPorDispositivo)) {
-            // Solo se marca inactivo si no ha sido marcado activo antes
-            estadosPorDispositivo[id] = 'inactivo';
+            estadosPorDispositivo[id] = false;
         }
-        console.log(`[verificación] ${id} - ${dia} ${hora} → ${estaActivo ? 'activo' : 'inactivo'}`);
     });
 
-    // Actualizar todos los dispositivos
+    // Actualizar campo horarioActivo de cada dispositivo
     const dispositivos = await Device.find({});
     for (const d of dispositivos) {
         const id = d._id.toString();
-        const nuevoEstado = estadosPorDispositivo[id] || 'inactivo';
-        if (d.estado !== nuevoEstado) {
-            await Device.findByIdAndUpdate(d._id, { estado: nuevoEstado });
-            console.log(`[estado] ${d.nombre} → ${nuevoEstado}`);
+        const nuevoHorarioActivo = estadosPorDispositivo[id] || false;
+
+        if (d.horarioActivo !== nuevoHorarioActivo) {
+            await Device.findByIdAndUpdate(d._id, { horarioActivo: nuevoHorarioActivo });
+            console.log(`[horarioActivo] ${d.nombre} → ${nuevoHorarioActivo}`);
+        }
+
+        // Mostrar verificación extendida con estado solo si está en horario
+        if (nuevoHorarioActivo) {
+            const estadoActual = d.estado || 'desconocido';
+            const extra = estadoActual === 'activo' ? `→ estado: activo` : '';
+            console.log(`[verificación] ${id} - ${dia} ${hora} → en horario ${extra}`);
         }
     }
 }

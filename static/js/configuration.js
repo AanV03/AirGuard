@@ -1,11 +1,24 @@
 //  Modulos de logica separada
 import { initCuenta } from './configuration/cuenta.js';
 import { initDispositivos } from './configuration/dispositivos.js';
-import { initSmartHome } from './configuration/smarthome.js';
+import { initSmartHome, detenerAutoActualizacionLecturas } from './configuration/smarthome.js';
 import { initHorarios } from './configuration/horarios.js';
 import { initUsuarios } from './configuration/usuarios.js';
 import { initSoporte } from './configuration/soporte.js';
 
+import { authFetch } from './utils/authFetch.js';
+
+// Verificar si el token sigue válido antes de continuar
+// si no, redirige directamente al inicio
+(async () => {
+    try {
+        const res = await authFetch('/api/users/me'); 
+        if (!res.ok) throw new Error();
+    } catch (err) {
+        localStorage.setItem('toastMensaje', 'Sesión expirada. Vuelve a iniciar sesión.');
+        window.location.href = '/';
+    }
+})();
 
 // Redirigir si no hay sesión activa
 if (!localStorage.getItem('usuarioLogueado')) {
@@ -91,6 +104,7 @@ menuToggle.addEventListener('click', () => {
 
 tabs.forEach(tab => {
     tab.addEventListener('click', () => {
+
         // Cerrar menú si está abierto (solo para pantallas pequeñas)
         navMenu.classList.remove('open');
 
@@ -102,6 +116,13 @@ tabs.forEach(tab => {
         tabContents.forEach(content => content.classList.add('hidden'));
         const section = document.getElementById(tab.dataset.tab);
         section.classList.remove('hidden');
+
+        const tabSeleccionada = tab.dataset.tab;
+
+        // Solo detener auto-actualización de lecturas si salimos de SmartHome
+        if (tabSeleccionada !== 'smarthome') {
+            detenerAutoActualizacionLecturas();
+        }
 
         // Ejecutar lógica específica por pestaña
         if (tab.dataset.tab === 'cuenta') initCuenta();
@@ -142,7 +163,7 @@ tabs.forEach(tab => {
 });
 
 // toast de mensajes de error o success
-function mostrarToast(mensaje, tipo = 'success') {
+window.mostrarToast = function (mensaje, tipo = 'success') {
     const toast = document.getElementById('toast-mensaje');
     toast.textContent = mensaje;
     toast.className = `toast show ${tipo}`;

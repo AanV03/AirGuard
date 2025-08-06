@@ -94,13 +94,19 @@ exports.loginWithGoogle = async (req, res) => {
         );
 
 
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: false, // 
+            sameSite: 'Strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días
+        });
+
         res.status(200).json({
             user: {
                 _id: user._id,
                 nombre: user.nombre,
                 email: user.email
-            },
-            token
+            }
         });
 
     } catch (err) {

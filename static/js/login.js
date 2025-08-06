@@ -101,21 +101,28 @@ window.onGoogleSignIn = async function (response) {
 };
 
 window.onload = () => {
-    google.accounts.id.initialize({
-        client_id: "354426284146-id08j7159muv8is442969qmn2p14j5h0.apps.googleusercontent.com",
-        callback: onGoogleSignIn,
-        ux_mode: "popup"
-    });
+    const waitForGoogle = setInterval(() => {
+        if (window.google && google.accounts && google.accounts.id) {
+            clearInterval(waitForGoogle);
 
-    google.accounts.id.renderButton(
-        document.getElementById("google-btn"),
-        {
-            theme: "outline",
-            size: "large",
-            type: "standard"
+            google.accounts.id.initialize({
+                client_id: "354426284146-id08j7159muv8is442969qmn2p14j5h0.apps.googleusercontent.com",
+                callback: onGoogleSignIn,
+                ux_mode: "popup"
+            });
+
+            google.accounts.id.renderButton(
+                document.getElementById("google-btn"),
+                {
+                    theme: "outline",
+                    size: "large",
+                    type: "standard"
+                }
+            );
         }
-    );
+    }, 100); // intenta cada 100ms hasta que cargue
 };
+
 
 // toast de mensajes de error o success
 function mostrarToast(mensaje, tipo = 'success') {

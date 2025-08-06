@@ -18,7 +18,7 @@ const HabitacionSchema = new mongoose.Schema({
         CH4: Number,
         IAQ: Number
     },
-    deviceId: { type: mongoose.Schema.Types.ObjectId, ref: 'Device' }
+    dispositivo_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Device' }
 });
 
 const PisoSchema = new mongoose.Schema({

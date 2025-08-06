@@ -27,7 +27,7 @@ async function cargarDispositivos() {
 
             card.innerHTML = `
                     <div class="dispositivo-img">
-                        <img src="/static/img/Dispositivo.png" alt="Dispositivo" title="Dispositivo">
+                        <img src="/static/img/DispositivoBlanco_Azul.png" alt="Dispositivo" title="Dispositivo">
                     </div>
                     <div class="dispositivo-info">
                         <h3>${dispositivo.nombre}</h3>

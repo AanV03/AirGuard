@@ -71,3 +71,43 @@ exports.deleteDevice = async (req, res) => {
         res.status(500).json({ error: 'Error al eliminar dispositivo' });
     }
 };
+
+// 6) 
+exports.reiniciarDispositivo = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const device = await Device.findOne({ _id: id, usuario_id: req.user.id });
+        if (!device) return res.status(404).json({ error: 'Dispositivo no encontrado' });
+
+        device.comando = 'reiniciar';
+        await device.save();
+
+        res.status(200).json({ mensaje: 'Comando de reinicio enviado' });
+    } catch (error) {
+        console.error('Error al enviar comando:', error);
+        res.status(500).json({ error: 'Error al enviar el comando de reinicio' });
+    }
+};
+
+// 7)
+exports.obtenerComando = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const device = await Device.findById(id);
+        if (!device) return res.status(404).json({ error: 'Dispositivo no encontrado' });
+
+        const comando = device.comando;
+
+        // Limpiar el comando después de enviarlo (solo si quieres que se ejecute una vez)
+        device.comando = null;
+        await device.save();
+
+        res.status(200).json({ comando });
+    } catch (error) {
+        console.error('Error al obtener comando:', error);
+        res.status(500).json({ error: 'Error al obtener comando' });
+    }
+};
+

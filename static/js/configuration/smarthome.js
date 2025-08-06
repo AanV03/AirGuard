@@ -12,6 +12,7 @@ let roomCounters = {}; // Ej: { 1: 3, 2: 1 }
 let currentFloor = 1;
 let floorTabs, floorContainer;
 let dispositivosDisponibles = [];
+let autoUpdateTimer = null;
 
 // Crea un nuevo piso y lo agrega a la interfaz
 function createFloor(floorNumber) {
@@ -261,116 +262,71 @@ async function resetHouse() {
     }
 }
 
-function getSensorStatus(sensor, value) {
-    const rangos = {
-        CO: {
-            min: 0, max: 50, // ppm
-            limites: [9, 35] // <=9 bueno, 10-35 moderado, >35 peligroso (EPA/OMS)
-        },
-        PM1_0: {
-            min: 0, max: 50, // μg/m³
-            limites: [10, 25] // estimado por analogía a PM2.5
-        },
-        PM2_5: {
-            min: 0, max: 100,
-            limites: [12, 35] // OMS: 12 bueno, 12–35 moderado, >35 peligroso
-        },
-        PM10: {
-            min: 0, max: 150,
-            limites: [50, 100] // OMS: <50 bueno, 51–100 moderado, >100 peligroso
-        },
-        Humedad: {
-            min: 0, max: 100,
-            limites: [30, 60] // ASHRAE: zona de confort 30–60%
-        },
-        Temperatura: {
-            min: 0, max: 50,
-            limites: [20, 26] // ASHRAE: confort interior entre 20–26°C
-        },
-        VOCs: {
-            min: 0, max: 1000, // ppb
-            limites: [300, 700] // fuente: Bosch BME680 datasheet
-        },
-        H2: {
-            min: 0, max: 10,
-            limites: [5, 7] // estimado, sin regulación directa
-        },
-        CH4: {
-            min: 0, max: 10,
-            limites: [5, 7] // valores típicos en sensores MQ-4 o CCS811
-        },
-        IAQ: {
-            min: 0, max: 500,
-            limites: [100, 300] // índice típico: 0–100 bueno, 101–300 moderado, >300 malo
-        }
-    };
-
-    const r = rangos[sensor] || { min: 0, max: 100, limites: [30, 70] };
-    const [lim1, lim2] = r.limites;
-
-    let estado = 'normal';
-    if (value > lim2) estado = 'peligroso';
-    else if (value > lim1) estado = 'moderado';
-
-    const percent = Math.min(100, Math.max(0, ((value - r.min) / (r.max - r.min)) * 100));
-
-    return { percent, estado };
-}
-
 function abrirModalSeleccionDispositivo(roomElement) {
-    // Validaciones iniciales
-    if (!roomElement || !(roomElement instanceof HTMLElement)) {
-        console.warn('[abrirModalSeleccionDispositivo] Se llamó sin una habitación válida.');
-        return;
-    }
-
-    // Si es un bloque vacío (estructura), no se debe permitir vincular dispositivos
-    if (roomElement.classList.contains('room-block-estructura')) {
-        console.warn('[abrirModalSeleccionDispositivo] No se puede asignar dispositivo a una estructura vacía.');
-        return;
-    }
+    if (!roomElement || !(roomElement instanceof HTMLElement)) return;
+    if (roomElement.classList.contains('room-block-estructura')) return;
 
     const modal = document.getElementById('modal-dispositivos');
     const lista = document.getElementById('lista-dispositivos-modal');
-    if (!modal || !lista) {
-        console.error('[abrirModalSeleccionDispositivo] Modal o lista no encontrados.');
-        return;
-    }
+    if (!modal || !lista) return;
 
-    // roomId único para esta habitación
     const roomId = roomElement.dataset.roomId || crypto.randomUUID();
     roomElement.dataset.roomId = roomId;
     modal.dataset.roomId = roomId;
 
-    // Limpiar lista del modal
     lista.innerHTML = '';
 
-    // Buscar todos los dispositivos renderizados
-    const dispositivos = dispositivosDisponibles;
-
-    dispositivos.forEach(d => {
+    dispositivosDisponibles.forEach(d => {
         const id = d._id;
         const nombre = d.nombre;
-        const imagen = d.imagen || '/static/img/Dispositivo.png';
+        const imagen = d.imagen || '/static/img/DispositivoBlanco_Azul.png';
 
-        const yaAsignado = document.querySelector(`[data-device-id="${id}"]`);
+        const yaAsignado = document.querySelector(`[data-dispositivo_id="${id}"]`);
         if (yaAsignado) return;
 
         const item = document.createElement('li');
         item.className = 'item-dispositivo-modal';
-        item.style.display = 'flex';
-        item.style.alignItems = 'center';
-        item.style.gap = '10px';
-        item.style.marginBottom = '8px';
-        item.style.cursor = 'pointer';
+        item.style.cssText = 'display:flex; align-items:center; gap:10px; margin-bottom:8px; cursor:pointer;';
+        item.innerHTML = `<img src="${imagen}" alt="${nombre}"><span>${nombre}</span>`;
 
-        item.innerHTML = `
-        <img src="${imagen}" alt="${nombre}">
-        <span>${nombre}</span>
-    `;
+        item.addEventListener('click', async () => {
+            roomElement.dataset.dispositivo_id = id;
 
-        item.addEventListener('click', () => {
-            roomElement.dataset.deviceId = id;
+            // 1. Pedir lecturas reales del backend
+            let lecturas = {};
+            try {
+                const resp = await authFetch(`/api/home/lecturas/ultimo/${id}`);
+                if (resp.ok) {
+                    lecturas = await resp.json();
+                } else {
+                    const sensores = ['CO', 'PM1_0', 'PM2_5', 'PM10', 'Humedad', 'Temperatura', 'VOCs', 'H2', 'CH4', 'IAQ'];
+                    lecturas = Object.fromEntries(sensores.map(s => [s, 0]));
+                }
+            } catch (e) {
+                console.warn('[lectura real fallback]', e);
+            }
+
+            // 2. Actualizar las barras
+            const grid = roomElement.querySelector('.lecturas-grid');
+            if (grid) {
+                grid.innerHTML = '';
+                Object.entries(lecturas).forEach(([k, valor]) => {
+                    const { percent, estado } = getSensorStatus(k, valor);
+                    grid.innerHTML += `
+                        <div class="sensor-item">
+                            <div class="sensor-header">
+                                <span class="sensor-nombre">${k}</span>
+                                <span class="sensor-bar-label">${valor}</span>
+                            </div>
+                            <div class="sensor-bar-container">
+                                <div class="sensor-bar ${estado}" style="--value:${percent}"></div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // 3. Mostrar visualmente el dispositivo asignado
             mostrarDispositivoEnHabitacion(roomElement, imagen, nombre, d.estado);
             cerrarModal();
         });
@@ -380,6 +336,7 @@ function abrirModalSeleccionDispositivo(roomElement) {
 
     modal.classList.remove('hidden');
 }
+
 
 // funcion para cerrar el modal
 function cerrarModal() {
@@ -458,6 +415,104 @@ function debounce(fn, delay) {
     };
 }
 
+function getSensorStatus(sensor, value) {
+    switch (sensor) {
+        case 'CO':
+            if (value < 10) return { percent: value * 10, estado: 'bueno' };
+            if (value < 15) return { percent: value * 10, estado: 'moderado' };
+            return { percent: 100, estado: 'malo' };
+
+        case 'PM1_0':
+        case 'PM2_5':
+            if (value < 12) return { percent: (value / 50) * 100, estado: 'bueno' };
+            if (value < 35) return { percent: (value / 50) * 100, estado: 'moderado' };
+            return { percent: 100, estado: 'malo' };
+
+        case 'PM10':
+            if (value < 50) return { percent: (value / 150) * 100, estado: 'bueno' };
+            if (value < 100) return { percent: (value / 150) * 100, estado: 'moderado' };
+            return { percent: 100, estado: 'malo' };
+
+        case 'Humedad':
+            if (value >= 30 && value <= 60) return { percent: value, estado: 'bueno' };
+            return { percent: value, estado: 'malo' };
+
+        case 'Temperatura':
+            if (value >= 20 && value <= 26) return { percent: (value / 40) * 100, estado: 'bueno' };
+            return { percent: (value / 40) * 100, estado: 'moderado' };
+
+        case 'VOCs':
+            if (value < 300) return { percent: (value / 1000) * 100, estado: 'bueno' };
+            if (value < 700) return { percent: (value / 1000) * 100, estado: 'moderado' };
+            return { percent: 100, estado: 'malo' };
+
+        case 'H2':
+            if (value < 2) return { percent: (value / 10) * 100, estado: 'bueno' };
+            if (value < 5) return { percent: (value / 10) * 100, estado: 'moderado' };
+            return { percent: 100, estado: 'malo' };
+
+        case 'CH4':
+            if (value < 1) return { percent: (value / 5) * 100, estado: 'bueno' };
+            if (value < 3) return { percent: (value / 5) * 100, estado: 'moderado' };
+            return { percent: 100, estado: 'malo' };
+
+        case 'IAQ':
+            if (value < 100) return { percent: (value / 500) * 100, estado: 'bueno' };
+            if (value < 300) return { percent: (value / 500) * 100, estado: 'moderado' };
+            return { percent: 100, estado: 'malo' };
+
+        default:
+            return { percent: 50, estado: 'moderado' }; // Fallback
+    }
+}
+
+function iniciarAutoActualizacionLecturas() {
+    if (autoUpdateTimer) clearInterval(autoUpdateTimer); // evitar duplicados
+
+    autoUpdateTimer = setInterval(() => {
+        document.querySelectorAll('.room-block').forEach(async room => {
+            const dispositivoId = room.dataset.dispositivo_id;
+            if (!dispositivoId) return;
+
+            try {
+                const res = await authFetch(`/api/home/lecturas/ultimo/${dispositivoId}`);
+                if (!res.ok) throw new Error('Lectura no disponible');
+
+                const datos = await res.json();
+
+                const grid = room.querySelector('.lecturas-grid');
+                if (!grid) return;
+
+                grid.innerHTML = '';
+                Object.entries(datos).forEach(([k, valor]) => {
+                    const { percent, estado } = getSensorStatus(k, valor);
+                    grid.innerHTML += `
+                        <div class="sensor-item">
+                            <div class="sensor-header">
+                                <span class="sensor-nombre">${k}</span>
+                                <span class="sensor-bar-label">${valor}</span>
+                            </div>
+                            <div class="sensor-bar-container">
+                                <div class="sensor-bar ${estado}" style="--value:${percent}"></div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.warn(`[auto-update] Error con ${dispositivoId}:`, err.message);
+            }
+        });
+    }, 1000);
+}
+
+export function detenerAutoActualizacionLecturas() {
+    if (autoUpdateTimer) {
+        clearInterval(autoUpdateTimer);
+        autoUpdateTimer = null;
+        console.log('[auto-update] detenido');
+    }
+}
+
 // Función principal para inicializar la interfaz de Smart Home
 export async function initSmartHome() {
 
@@ -471,20 +526,7 @@ export async function initSmartHome() {
     selectDispositivo = document.getElementById('select-dispositivo');
 
     await cargarLayout();
-
-    // Generador de datos simulados para los sensores de cada habitación
-    const sensoresSimulados = () => ({
-        CO: rand(0, 20),
-        PM1_0: rand(0, 10),
-        PM2_5: rand(0, 25),
-        PM10: rand(0, 50),
-        Humedad: rand(30, 70),
-        Temperatura: rand(18, 32),
-        VOCs: rand(0, 1000),
-        H2: rand(0, 10),
-        CH4: rand(0, 5),
-        IAQ: rand(0, 500)
-    });
+    iniciarAutoActualizacionLecturas();
 
     function findFreePosition(layout, className = 'room-block') {
         const gridSize = 20;
@@ -539,58 +581,51 @@ export async function initSmartHome() {
         const room = document.createElement('div');
         room.className = 'room-block';
 
-        // Se calcula la posición de la habitación en la cuadrícula
-        // Cada fila tiene hasta 4 habitaciones, por lo tanto:
-        // row determina la fila (0,1,2,...) y col la columna (0 a 3)
         const roomNumber = getNextRoomNumber(currentFloor);
         const { x: posX, y: posY } = findFreePosition(houseLayout, 'room-block');
 
-        // Guardamos posición como atributos personalizados
         room.dataset.x = posX;
         room.dataset.y = posY;
 
-        // Se generan lecturas simuladas para cada sensor
-        const lecturas = sensoresSimulados();
-        const keys = Object.keys(lecturas);
+        // Sensores vacíos desde inicio
+        const sensores = ['CO', 'PM1_0', 'PM2_5', 'PM10', 'Humedad', 'Temperatura', 'VOCs', 'H2', 'CH4', 'IAQ'];
+        const lecturas = Object.fromEntries(sensores.map(s => [s, 0]));
 
         room.innerHTML = `
-            <div class="room-controls">
-                <button class="btn-delete" title="Eliminar"><i class="bi bi-x-circle-fill"></i></button>
-                <button class="btn-resize" title="Redimensionar"><i class="bi bi-pencil-square"></i></button>
-            </div>
-            <h4 contenteditable="true">Habitación ${roomNumber}</h4>
-            <button class="btn-vincular-dispositivo">+ Añadir dispositivo</button>
-            <div class="lecturas-grid">
-                ${keys.map(k => {
+        <div class="room-controls">
+            <button class="btn-delete" title="Eliminar"><i class="bi bi-x-circle-fill"></i></button>
+            <button class="btn-resize" title="Redimensionar"><i class="bi bi-pencil-square"></i></button>
+        </div>
+        <h4 contenteditable="true">Habitación ${roomNumber}</h4>
+        <button class="btn-vincular-dispositivo">+ Añadir dispositivo</button>
+        <div class="lecturas-grid">
+            ${sensores.map(k => {
             const valor = lecturas[k];
             const { percent, estado } = getSensorStatus(k, valor);
             return `
-                        <div class="sensor-item">
-                            <div class="sensor-header">
-                                <span class="sensor-nombre">${k}</span>
-                                <span class="sensor-bar-label">${valor}</span>
-                            </div>
-                            <div class="sensor-bar-container">
-                                <div class="sensor-bar ${estado}" style="--value:${percent}"></div>
-                            </div>
+                    <div class="sensor-item">
+                        <div class="sensor-header">
+                            <span class="sensor-nombre">${k}</span>
+                            <span class="sensor-bar-label">${valor}</span>
                         </div>
-                    `;
+                        <div class="sensor-bar-container">
+                            <div class="sensor-bar ${estado}" style="--value:${percent}"></div>
+                        </div>
+                    </div>
+                `;
         }).join("")}
-            </div>
-        `;
+        </div>
+    `;
 
-        // Posicionamiento y dimensiones iniciales de la habitación
         room.style.transform = `translate(${posX}px, ${posY}px)`;
         room.style.width = '180px';
         room.style.height = '220px';
 
-        // Si hay otras habitaciones en modo redimensionar, se desactiva esa funcionalidad
         document.querySelectorAll('.room-block.resizing').forEach(rb => {
             rb.classList.remove('resizing');
             interact(rb).resizable({ enabled: false });
         });
 
-        // Se agrega la habitación al piso actual y se habilita su interacción
         houseLayout.appendChild(room);
         initRoomInteraction(room, houseLayout);
     });
@@ -687,8 +722,7 @@ export async function initSmartHome() {
 
                 const lecturas = {};
                 const sensores = room.querySelectorAll('.lecturas-grid .sensor-item');
-                const deviceId = room.dataset.deviceId || null;
-                sensores.forEach(item => {
+                const dispositivo_id = room.dataset.dispositivo_id ? String(room.dataset.dispositivo_id) : null; sensores.forEach(item => {
                     const nombre = item.querySelector('.sensor-nombre')?.textContent;
                     const valorTexto = item.querySelector('.sensor-bar-label')?.textContent;
                     const valor = parseFloat(valorTexto);
@@ -698,7 +732,7 @@ export async function initSmartHome() {
                 rooms.push({
                     nombre, x, y, width, height,
                     lecturas: Object.keys(lecturas).length > 0 ? lecturas : undefined,
-                    deviceId: deviceId || undefined
+                    dispositivo_id: dispositivo_id || undefined
                 });
             });
 
@@ -809,8 +843,7 @@ async function actualizarBackendConPisos() {
 
             const lecturas = {};
             const sensores = room.querySelectorAll('.lecturas-grid .sensor-item');
-            const deviceId = room.dataset.deviceId || null;
-
+            const dispositivo_id = room.dataset.dispositivo_id ? String(room.dataset.dispositivo_id) : null;
             sensores.forEach(item => {
                 const nombre = item.querySelector('.sensor-nombre')?.textContent;
                 const valorTexto = item.querySelector('.sensor-bar-label')?.textContent;
@@ -821,7 +854,7 @@ async function actualizarBackendConPisos() {
             rooms.push({
                 nombre, x, y, width, height,
                 lecturas: Object.keys(lecturas).length > 0 ? lecturas : undefined,
-                deviceId: deviceId || undefined
+                dispositivo_id: dispositivo_id || undefined
             });
         });
 
@@ -857,10 +890,9 @@ async function cargarLayout() {
 
         roomCounters = {}; // Reinicia contadores
 
-        data.pisos.forEach(p => {
+        for (const p of data.pisos) {
             let layout = document.querySelector(`.house-layout[data-floor="${p.numero}"]`);
 
-            // Si no existe el piso, créalo
             if (!layout) {
                 createFloor(p.numero);
                 layout = document.querySelector(`.house-layout[data-floor="${p.numero}"]`);
@@ -868,19 +900,42 @@ async function cargarLayout() {
 
             if (!layout) {
                 console.warn(`[cargarLayout] No se encontró o no se pudo crear el layout del piso ${p.numero}`);
-                return;
+                continue;
             }
 
-            layout.innerHTML = ''; // Limpia habitaciones anteriores del piso
+            layout.innerHTML = '';
             roomCounters[p.numero] = p.habitaciones.length;
 
-            p.habitaciones.forEach(h => {
-                const keys = Object.keys(h.lecturas || {});
-                const esHabitacion = keys.length > 0 && Object.values(h.lecturas).some(v => typeof v === 'number');
+            for (const h of p.habitaciones) {
+                const sensores = ['CO', 'PM1_0', 'PM2_5', 'PM10', 'Humedad', 'Temperatura', 'VOCs', 'H2', 'CH4', 'IAQ'];
+
+                // Normalizar dispositivo_id a string
+                let dispositivoId = null;
+                if (h.dispositivo_id) {
+                    dispositivoId = typeof h.dispositivo_id === 'object' && h.dispositivo_id.toString
+                        ? h.dispositivo_id.toString()
+                        : String(h.dispositivo_id);
+                }
+
+                console.log('[debug] dispositivo_id en habitación:', h.nombre, dispositivoId);
+
+                let lecturas = {};
+                if (dispositivoId) {
+                    try {
+                        const resp = await authFetch(`/api/home/lecturas/ultimo/${dispositivoId}`);
+                        lecturas = resp.ok
+                            ? await resp.json()
+                            : Object.fromEntries(sensores.map(s => [s, 0]));
+                    } catch (err) {
+                        console.warn(`[lectura real] No se pudo obtener para ${dispositivoId}`);
+                        lecturas = Object.fromEntries(sensores.map(s => [s, 0]));
+                    }
+                }
+
+                const esHabitacion = !!dispositivoId;
 
                 const room = document.createElement('div');
                 room.className = esHabitacion ? 'room-block' : 'room-block room-block-estructura';
-
                 layout.appendChild(room);
 
                 room.dataset.x = h.x;
@@ -899,10 +954,10 @@ async function cargarLayout() {
                         <button class="btn-resize" title="Redimensionar"><i class="bi bi-pencil-square"></i></button>
                     </div>
                     <h4 contenteditable="true">${h.nombre || 'Sin nombre'}</h4>
-                    ${(!h.deviceId && esHabitacion) ? `<button class="btn-vincular-dispositivo">+ Añadir dispositivo</button>` : ''}
+                    ${!dispositivoId && h.lecturas !== undefined ? `<button class="btn-vincular-dispositivo">+ Añadir dispositivo</button>` : ''}
                     <div class="lecturas-grid">
-                        ${esHabitacion ? keys.map(k => {
-                    const valor = h.lecturas[k];
+                        ${dispositivoId ? sensores.map(k => {
+                    const valor = lecturas[k] ?? 0;
                     const { percent, estado } = getSensorStatus(k, valor);
                     return `
                                 <div class="sensor-item">
@@ -919,25 +974,24 @@ async function cargarLayout() {
                     </div>
                 `;
 
-                if (h.deviceId) {
-                    room.dataset.deviceId = h.deviceId;
-                    const dispositivo = dispositivosDisponibles.find(d => d._id === h.deviceId);
+                if (dispositivoId) {
+                    room.dataset.dispositivo_id = dispositivoId;
+
+                    const dispositivo = dispositivosDisponibles.find(d => d._id === dispositivoId);
                     if (dispositivo) {
                         mostrarDispositivoEnHabitacion(
                             room,
-                            dispositivo.imagen || '/static/img/Dispositivo.png',
+                            dispositivo.imagen || '/static/img/DispositivoBlanco_Azul.png',
                             dispositivo.nombre,
                             dispositivo.estado
                         );
-                    } else {
-                        console.warn(`[cargarLayout] Dispositivo no encontrado para ID: ${h.deviceId}`);
                     }
                 }
 
                 initRoomInteraction(room, layout);
                 console.log('[debug] habitación cargada:', h);
-            });
-        });
+            }
+        }
 
         const primerPiso = data.pisos[0]?.numero || 1;
         activateFloor(primerPiso);

@@ -222,7 +222,7 @@ async function cargarDispositivosParaReiniciar(contenedor) {
 
         dispositivos.forEach(d => {
             const card = document.createElement('div');
-            const imagen = d.imagen || '/static/img/Dispositivo.png';
+            const imagen = d.imagen || '/static/img/DispositivoBlanco_Azul.png';
             const estado = d.estado?.toLowerCase() || 'desconocido';
             const claseEstado = estado === 'activo' ? 'estado-activo' : 'estado-inactivo';
             card.className = 'card-dispositivo-soporte';
@@ -235,16 +235,19 @@ async function cargarDispositivosParaReiniciar(contenedor) {
             `;
 
             const boton = card.querySelector('button');
+
             boton.addEventListener('click', async () => {
                 const confirmar = confirm(`¿Reiniciar ${d.nombre}?`);
                 if (!confirmar) return;
 
                 try {
-                    const reinicio = await authFetch(`/api/dispositivo/reiniciar/${d._id}`, {
+                    const reinicio = await authFetch(`/api/devices/reiniciar/${d._id}`, {
                         method: 'POST',
                     });
+
                     const respuesta = await reinicio.json();
                     mostrarToast(respuesta.mensaje || 'Reinicio exitoso', 'success');
+
                 } catch (err) {
                     console.error(err);
                     mostrarToast('Error al reiniciar el dispositivo', 'error');

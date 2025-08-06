@@ -21,4 +21,10 @@ router.put('/:id', verifyToken, deviceController.updateDevice);
 // Eliminar un dispositivo
 router.delete('/:id', verifyToken, deviceController.deleteDevice);
 
+// 
+router.post('/reiniciar/:id', verifyToken, deviceController.reiniciarDispositivo);
+
+//
+router.get('/comando/:id', deviceController.obtenerComando); 
+
 module.exports = router;
