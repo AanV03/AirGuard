@@ -1,6 +1,6 @@
 const User = require('../models/User');
 const PasswordReset = require('../models/PasswordTokens');
-const { enviarCorreoRecuperacion } = require('../utils/sendmail');
+const { enviarCorreoRecuperacion } = require('../utils/sendMail');
 const crypto = require('crypto');
 
 exports.solicitarReset = async (req, res) => {
