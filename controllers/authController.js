@@ -39,7 +39,7 @@ exports.loginUser = async (req, res) => {
         // Enviar el token como cookie segura httpOnly
         res.cookie('token', token, {
             httpOnly: true,              // no accesible desde JS (previene XSS)
-            secure: false,               // poner true si usas HTTPS en producción
+            secure: true,              
             sameSite: 'Strict',          // la cookie solo viaja en el mismo dominio
             maxAge: 2 * 60 * 60 * 1000   // duración: 2 horas en milisegundos
         });
@@ -96,7 +96,7 @@ exports.loginWithGoogle = async (req, res) => {
 
         res.cookie('token', token, {
             httpOnly: true,
-            secure: false, // 
+            secure: true,  
             sameSite: 'Strict',
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días
         });
